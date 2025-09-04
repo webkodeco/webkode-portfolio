@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { Navbar } from '../components/sections/Navbar'
+import { Hero } from '../components/sections/Hero'
+
 ---
 
 <Layout title="Webkode">
 	<Navbar client:load/>
+	<Hero client:load/>
 </Layout>
