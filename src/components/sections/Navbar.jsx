@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import WebkodeLogo from "../../assets/images/WebkodeLogo.jsx"
+import WebkodeLogo from "../../assets/images/WebkodeLogo.jsx";
 
 const navbarLinks = [
   { label: "Inicio", href: "/#home", ariaLabel: "Home" },
-  { label: "Servicios", href: "/#features", ariaLabel: "Features" },
+  { label: "Nosotros", href: "/#togethe", ariaLabel: "Togethe" },
+  { label: "Servicios", href: "/#service", ariaLabel: "Services" },
   { label: "Testimonios", href: "/#feedback", ariaLabel: "Feedback" },
-
 ];
 
 export const Navbar = () => {
@@ -27,7 +27,7 @@ export const Navbar = () => {
           <a href="/#home" aria-label="Home">
             <div className="flex justify-start items-center grow basis-0">
               <div className="text-white mr-2 text-6xl">
-                <WebkodeLogo/>
+                <WebkodeLogo />
               </div>
             </div>
           </a>
@@ -60,11 +60,11 @@ export const Navbar = () => {
           <div className="grow basis-0 justify-end hidden lg:flex">
             <a
               className="text-white main-border-gray rounded-xl
-              bg-[rgb(42,75,155)] hover:opacity-65 pl-6 pr-8 pt-2 pb-2 text-sm flex"
+              bg-[rgb(42,75,155)] pl-6 pr-8 pt-2 
+              pb-2 text-sm flex transition-transform duration-300 hover:scale-110"
               href="mailto:contacto@webkode.co"
               aria-label="contact"
             >
-              
               <span className="pt-px">Contactanos</span>
             </a>
           </div>
@@ -88,7 +88,7 @@ export const Navbar = () => {
             exit={{ opacity: 0 }}
           >
             <div
-              className="flex flex-col mt-16 lg:hidden absolute top-4 left-0  bg-bgDark1 z-50 w-full 
+              className="flex flex-col mt-16 lg:hidden absolute top-4 left-0  bg-gray-900 z-50 w-full 
         items-center gap-10 pb-10 border-y border-solid rounded-b-md border-[rgb(48, 49, 54)] pt-10
         "
             >
@@ -107,7 +107,6 @@ export const Navbar = () => {
                 className=" text-white bg-[rgb(42,75,155)] hover:hover:opacity-65 main-border-gray  rounded-xl outlined-button pl-6 pr-8 pt-2 pb-2  flex"
                 href="mailto:contacto@webkode.co"
               >
-             
                 Contactanos
               </a>
             </div>

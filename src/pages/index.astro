@@ -1,11 +1,16 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import { Navbar } from '../components/sections/Navbar'
-import { Hero } from '../components/sections/Hero'
-
+import Layout from "../layouts/Layout.astro";
+import { Navbar } from "../components/sections/Navbar";
+import { Hero } from "../components/sections/Hero";
+import { Services } from "../components/sections/Services";
+import { Testimonies } from "../components/sections/Testimonies";
+import { Footer } from "../components/sections/Footer";
 ---
 
 <Layout title="Webkode">
-	<Navbar client:load/>
-	<Hero client:load/>
+  <Navbar client:load />
+  <Hero client:load />
+  <Services client:visible />
+  <Testimonies client:visible />
+  <Footer client:visible />
 </Layout>
