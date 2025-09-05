@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
+import { ContactMeModal } from "../ui/ContactMeModal";
+
 export const Hero = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <section
       className="w-screen flex justify-center items-center bg-gray-900 mb-[28vw] md:mb-[18vw] lg:mb-[10vw] xl:mb-[13vw] 2xl:mb-60 hero-bg-gradient pb-24 sm:pb-32 md:pb-44 lg:pb-0"
@@ -52,7 +57,9 @@ export const Hero = () => {
           transition-transform duration-300 hover:scale-110"
           >
             <button
-              className="contained-button text-black rounded-xl font-bold cursor-pointer bg-gray-300 w-52 sm:w-52 h-12 mr-0 sm:mr-4 lg:mr-6 mb-2 sm:mb-0"
+              className="contained-button text-black rounded-xl font-bold cursor-pointer bg-gray-300 w-52 sm:w-52 h-12 
+              mr-0 sm:mr-4 lg:mr-6 mb-2 sm:mb-0"
+              onClick={() => setIsModalOpen(true)}
               aria-label="ContactMe"
             >
               Contactanos
@@ -72,6 +79,9 @@ export const Hero = () => {
             />
           </div>
         </motion.div> */}
+        {isModalOpen && (
+          <ContactMeModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+        )}
       </div>
     </section>
   );

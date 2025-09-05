@@ -83,7 +83,7 @@ export const Services = () => {
                   </ul>
                   <button
                     className="inline-block text-white text-center py-2 px-4 w-full rounded-xl rounded-t-xl 
-                    contained-button cursor-pointer bg-[rgb(191,24,24)] font-bold leading-loose mt-16"
+                    contained-button transition-transform duration-300 hover:scale-110 cursor-pointer bg-[rgb(191,24,24)] font-bold leading-loose mt-16"
                     // onClick=""
                     aria-label="Get started"
                   >
@@ -118,7 +118,7 @@ export const Services = () => {
                   <button
                     className="inline-block text-white text-center 
                     py-2 px-4 w-full contained-button leading-loose 
-                    transition font-bold duration-200 mt-20 rounded-xl cursor-pointer bg-[rgb(191,24,24)]"
+                    transition-transform duration-300 hover:scale-110 font-bold mt-20 rounded-xl cursor-pointer bg-[rgb(191,24,24)]"
                     // onClick={() => setIsModalOpen(true)}
                     aria-label="Get started"
                   >
@@ -153,7 +153,7 @@ export const Services = () => {
                   <button
                     className="inline-block text-white text-center py-2 px-4 w-full 
                     rounded-xl rounded-t-xl contained-button font-bold leading-loose mt-16
-                    cursor-pointer bg-[rgb(191,24,24)]"
+                    cursor-pointer transition-transform duration-300 hover:scale-110 bg-[rgb(191,24,24)]"
                     // onClick={() => setIsModalOpen(true)}
                     aria-label="Get started"
                   >

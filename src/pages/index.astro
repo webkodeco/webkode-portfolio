@@ -5,6 +5,8 @@ import { Hero } from "../components/sections/Hero";
 import { Services } from "../components/sections/Services";
 import { Testimonies } from "../components/sections/Testimonies";
 import { Footer } from "../components/sections/Footer";
+import { ScrollUpButton } from "../components/ui/ScrollUpButton";
+
 ---
 
 <Layout title="Webkode">
@@ -13,4 +15,5 @@ import { Footer } from "../components/sections/Footer";
   <Services client:visible />
   <Testimonies client:visible />
   <Footer client:visible />
+  <ScrollUpButton client:load />
 </Layout>
