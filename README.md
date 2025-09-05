@@ -11,12 +11,40 @@ npm create astro@latest -- --template minimal
 Inside of your Astro project, you'll see the following folders and files:
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+.
+├─ public/                      # Archivos estáticos (favicons, og-images)
+├─ src/
+│  ├─ pages/                    # Rutas (SSG/SSR). Ej: index.astro, blog/[slug].astro
+│  ├─ layouts/                  # Plantillas: BaseLayout.astro, BlogLayout.astro
+│  ├─ components/
+│  │  ├─ ui/                    # Átomos (Botón, Input, Card)
+│  │  ├─ sections/              # Secciones reutilizables (Hero, Features)
+│  │  └─ widgets/               # Islands interactivas (carrito, buscador)
+│  ├─ content/                  # Content Collections
+│  │  ├─ config.ts              # Definición de colecciones (zod)
+│  │  ├─ blog/                  # MD/MDX del blog
+│  │  └─ pages/                 # Páginas de marketing en MDX si aplica
+│  ├─ lib/
+│  │  ├─ env.ts                 # Validación de variables de entorno (zod)
+│  │  ├─ seo.ts                 # Helpers SEO (metadatos, OG, JSON-LD)
+│  │  ├─ utils/                 # Utilidades puras
+│  │  └─ services/              # Acceso a APIs/DB (fetchers, SDKs)
+│  ├─ server/
+│  │  ├─ api/                   # Endpoints de Astro (/api/*.ts)
+│  │  └─ middleware.ts          # Middlewares (headers, seguridad)
+│  ├─ styles/
+│  │  ├─ globals.css            # Tailwind base + tokens
+│  │  └─ prose.css              # Tipografía para MDX
+│  ├─ assets/                   # Imágenes procesadas por Astro <Image />
+│  └─ composables/              # Composables de Vue (estado local por island)
+├─ tests/                       # Vitest + Playwright (e2e)
+├─ scripts/                     # Scripts de build/deploy/ci
+├─ .env.example                 # Plantilla de variables
+├─ astro.config.mjs
+├─ tsconfig.json
+├─ tailwind.config.ts
+└─ eslint.config.js
+
 ```
 
 Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
