@@ -34,7 +34,7 @@ export const Hero = () => {
             </h1>
           </div>
           <h1 className="mt-2 sm:mt-2 text-xl sm:text-3xl lg:text-4xl xl:text-4xl font-bold tracking-wide text-white px-8 sm:px-20 md:px-24 lg:px-24">
-            Tecnología empresarial simple, ágil y efectiva
+            Desarrollamos el crecimiento de tu empresa Kodificando tus ideas.
           </h1>
         </motion.div>
         <motion.div
