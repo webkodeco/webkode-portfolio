@@ -40,14 +40,6 @@ export const Footer = () => {
               <p className="mb-10 mt-4 sm:w-[22rem] lg:w-[20rem] xl:w-[24rem] text-gray-400 leading-loose text-center lg:text-left mx-auto lg:mx-0">
                 Unifica tus procesos y obtén la información que tu negocio
                 necesita para avanzar.
-                {/* <a
-                  href="https://bootstrapious.com/p/bootstrap-4-dark-admin"
-                  target="_blank"
-                  className="text-gray-100 ml-1.5 "
-                  aria-label="Dark Admin Dashboard"
-                >
-                  here.
-                </a> */}
               </p>
               <div className="w-36 mx-auto lg:mx-0">
                 <a
@@ -58,13 +50,6 @@ export const Footer = () => {
                 >
                   <LinkdinIcon />
                 </a>
-                {/* <a
-                  className="inline-block w-10  h-10 mr-2 p-2 pt-[0.55rem] pl-[0.55rem] outlined-button"
-                  href="#"
-                  aria-label="Twitter"
-                >
-                  <TwitterIcon />
-                </a> */}
                 <a
                   className="inline-block w-10  h-10 mr-2 p-2 pt-[0.55rem] pl-[0.55rem] outlined-button"
                   href="https://www.instagram.com/webkodeco/"
