@@ -24,7 +24,7 @@ export const Navbar = () => {
           exit={{ opacity: 0 }}>
           <a href="/#home" aria-label="Home">
             <div className="flex justify-start items-center grow basis-0">
-              <div className="text-white mr-2 text-6xl">
+              <div className="text-white mr-2 text-6xl hover:scale-110 transform-stroke duration-100">
                 <WebkodeLogo />
               </div>
             </div>
@@ -74,6 +74,7 @@ export const Navbar = () => {
           <div className="w-5 h-0.5 bg-gray-500 "></div>
         </div>
       </div>
+
       {/* Mobile navbar */}
       <AnimatePresence>
         {isOpen && (
@@ -85,9 +86,7 @@ export const Navbar = () => {
           >
             <div
               className="flex flex-col mt-16 lg:hidden absolute top-4 left-0  bg-gray-900 z-50 w-full 
-        items-center gap-10 pb-10 border-y border-solid rounded-b-md border-[rgb(48, 49, 54)] pt-10
-        "
-            >
+                items-center gap-10 pb-10 border-y border-solid rounded-b-md border-[rgb(48, 49, 54)] pt-10">
               {navbarLinks.map(({ label, href, ariaLabel }) => (
                 <a
                   key={href}

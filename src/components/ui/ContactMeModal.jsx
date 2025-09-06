@@ -220,7 +220,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   <div className="col-span-2">
                     <label
                       htmlFor="contact-name"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-left text-sm font-medium text-white"
                     >
                       Nombre (*):
                     </label>
@@ -238,7 +238,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   <div className="col-span-2">
                     <label
                       htmlFor="contact-email"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-left text-sm font-medium text-white"
                     >
                       Correo electrónico (*):
                     </label>
@@ -256,7 +256,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   <div className="col-span-2">
                     <label
                       htmlFor="contact-country"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-left text-sm font-medium text-white"
                     >
                       País (*):
                     </label>
@@ -270,7 +270,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   <div className="col-span-2">
                     <label
                       htmlFor="contact-phone"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-left text-sm font-medium text-white"
                     >
                       Número de contacto (*):
                     </label>
@@ -297,9 +297,9 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   <div className="col-span-2">
                     <label
                       htmlFor="contact-message"
-                      className="block mb-2 text-sm font-medium text-white"
+                      className="block mb-2 text-left text-sm font-medium text-white"
                     >
-                      Déjanos un mensaje
+                      Déjanos un mensaje:
                     </label>
                     <textarea
                       id="contact-message"
@@ -317,8 +317,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   className="text-white inline-flex items-center 
                     bg-[rgb(42,75,155)] hover:scale-110 outline-none  
                     font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 
-                    text-center cursor-pointer"
-                >
+                    text-center cursor-pointer">
                   Enviar
                 </button>
               </form>
