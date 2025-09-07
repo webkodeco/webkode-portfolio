@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { Navbar } from "../components/sections/Navbar";
 import { Hero } from "../components/sections/Hero";
+import { We } from "../components/sections/We"
 import { Services } from "../components/sections/Services";
 import { Testimonies } from "../components/sections/Testimonies";
 import { Footer } from "../components/sections/Footer";
@@ -12,6 +13,7 @@ import { ScrollUpButton } from "../components/ui/ScrollUpButton";
 <Layout title="Webkode">
   <Navbar client:load />
   <Hero client:load />
+  <We client:visible />
   <Services client:visible />
   <Testimonies client:visible />
   <Footer client:visible />

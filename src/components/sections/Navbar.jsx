@@ -4,7 +4,7 @@ import WebkodeLogo from "../../assets/images/WebkodeLogo.jsx";
 
 const navbarLinks = [
   { label: "Inicio", href: "/#home", ariaLabel: "Home" },
-  { label: "Nosotros", href: "/#togethe", ariaLabel: "Togethe" },
+  { label: "Nosotros", href: "/#we", ariaLabel: "Togethe" },
   { label: "Servicios", href: "/#service", ariaLabel: "Services" },
   { label: "Testimonios", href: "/#feedback", ariaLabel: "Feedback" },
 ];

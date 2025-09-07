@@ -23,7 +23,7 @@ const serviceData3 = [
 
 export const Services = () => {
   return (
-    <section className="w-screen flex justify-center bg-black relative">
+    <section className="w-screen flex justify-center bg-gray-900 relative">
       <div className="absolute -top-16" id="service" />
       <div className="pb-10 pt-12 bg-bgDark2  2xl:w-[1150px] lg:w-[1050px]  md:w-4/5 ">
         <motion.div

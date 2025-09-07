@@ -25,7 +25,7 @@ const footerData = [
 export const Footer = () => {
   return (
     <footer aria-label="Site footer">
-      <div className="pt-10  lg:pt-20 lg:pb-16 bg-black radius-for-skewed ">
+      <div className="pt-10  lg:pt-20 lg:pb-16 bg-gray-900 radius-for-skewed ">
         <div className="container mx-auto px-4 w-4/5 md:w-11/12 lg:w-10/12 xl:w-4/5 2xl:w-2/3">
           <div className="flex flex-wrap">
             <div className="w-full lg:w-1/3 mb-16 lg:mb-0">
@@ -38,8 +38,7 @@ export const Footer = () => {
                 </div>
               </div>
               <p className="mb-10 mt-4 sm:w-[22rem] lg:w-[20rem] xl:w-[24rem] text-gray-400 leading-loose text-center lg:text-left mx-auto lg:mx-0">
-                Unifica tus procesos y obtén la información que tu negocio
-                necesita para avanzar.
+                "Kodificamos tus ideas"
               </p>
               <div className="w-36 mx-auto lg:mx-0">
                 <a
