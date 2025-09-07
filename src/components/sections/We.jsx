@@ -1,17 +1,22 @@
 import { motion } from "framer-motion";
-import { CheckArrowIcon } from "../ui/CheckArrowIcon";
 import { TeamCard } from "../ui/TeamCard";
 
+const serviceData1 = {
+  role: "Ingeniero de Desarrollo FullStack",
+  stack: "🚀 Java - SpringBoot - Micronaut | PHP - Laravel | DB Sql & NoSQL | VueJs & AstroJs | 👾 Enfoque en rendimiento y escalabilidad 🤖"
+};
+const serviceData2 = {
+  role: "Ingeniero de Desarrollo FullStack",
+  stack: "🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
+};
+const serviceData3 = {
+  role: "Ingeniero de Desarrollo FrontEnd",
+  stack: "🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
+};
 
-const serviceData1 = [
-  "Ingeniero FullStack",
-];
-const serviceData2 = [
-  "Ingeniero FullStack",
-];
-const serviceData3 = [
-  "Ingeniero Frontend",
-];
+const img1 = "CarlosEscobar.webp"; 
+const img2 = "kevinmorelo.webp";
+const img3 = "VictorPalacios.webp";
 
 export const We = () => {
   return (
@@ -33,24 +38,24 @@ export const We = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 place-items-center mt-10 sm:mt-16">
               <div className="px-4">
                 <TeamCard
-                  name="Carlos Escobar N."
-                  role="Ingeniero FullStack"
-                  tagline="🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
-                  avatarSrc="/public/CarlosEscobar.jpeg"
+                  name="Carlos A. Escobar."
+                  role={serviceData1.role}
+                  tagline={serviceData1.stack}
+                  avatarSrc={img1}
                   avatarAlt="Carlos Escobar"
                   linkedin="https://www.linkedin.com/in/carlosesconav/"
                   github="https://github.com/carlosesconav"
                   email="mailto:carlos.escobar@webkode.co"
-                  bio="Más de 6 años construyendo productos escalables. Me enfoco en performance, DX y buenas prácticas (clean architecture, testing y CI/CD)."
-                  skills={["Java", "Spring", "SQL", "Angular", "AWS"]}
+                  bio="Más de 3 años construyendo productos escalables a nivel Cloud y OnPremise. Me enfoco en performance, escalabilidad y buenas prácticas (Clean architecture, testing y CI/CD)."
+                  skills={["Java", "PHP", "C#","SpringBoot", "SQL", "NoSQL",".NET Core", "AWS", "Docker", "CI/CD", "Micronaut", "AstroJs", "VueJs", "Laravel"]}
                 />
               </div>
               <div className="px-4">
                 <TeamCard
                   name="Kevin Morelo V."
-                  role="Ingeniero FullStack"
-                  tagline="🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
-                  avatarSrc="/public/kevinmorelo.jpeg"
+                  role={serviceData2.role}
+                  tagline={serviceData2.stack}
+                  avatarSrc={img2}
                   avatarAlt="Kevin Morelo"
                   linkedin="https://www.linkedin.com/in/kevinmorelo/"
                   github="https://github.com/KevinMorelo"
@@ -61,20 +66,25 @@ export const We = () => {
               </div>
               <div className="px-4">
                 <TeamCard
-                  name="Victor Palacios S."
-                  role="Ingeniero FullStack"
-                  tagline="🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
-                  avatarSrc="/public/VictorPalacios.jpeg"
+                  name="Victor M. Palacios."
+                  role={serviceData3.role}
+                  tagline={serviceData3.stack}
+                  avatarSrc={img3}
                   avatarAlt="Victor Palacios"
                   linkedin="https://www.linkedin.com/in/victormanuelpalacios/"
                   github="https://github.com/VictorMpalacios"
                   email="mailto:victor.palacios@webkode.co"
                   bio="Frontend enfocado en accesibilidad y microinteracciones. Experiencia en design systems, testing y performance web."
-                  skills={["React", "TypeScript", "Vite", "Playwright", "Design System"]}
+                  skills={[
+                    "React",
+                    "TypeScript",
+                    "Vite",
+                    "Playwright",
+                    "Design System",
+                  ]}
                 />
               </div>
             </div>
-
           </div>
         </motion.div>
       </div>
