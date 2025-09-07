@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { CheckArrowIcon } from "../ui/CheckArrowIcon";
-import Kevinmorelo from "../../assets/images/Kevinmorelo";
+import { TeamCard } from "../ui/TeamCard";
 
 
 const serviceData1 = [
@@ -26,94 +26,46 @@ export const We = () => {
         >
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center mb-16">
-              {/* <span className="block-subtitle text-white">
-                Encuentra la mejor opción para ti
-              </span> */}
               <h2 className="mt-6 mb-6 text-4xl lg:text-5xl font-bold font-heading text-white">
                 Conoce nuestro equipo WebKode
               </h2>
             </div>
-            <div className="flex flex-wrap flex-col lg:flex-row -mx-4 items-center mt-20">
-              <div className="w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0">
-                <div className="relative px-8 py-12 bg-[rgb(42,75,155)] rounded-3xl">
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2">
-                      <Kevinmorelo />
-                  </div>
-
-                  <h3 className="mt-16 mb-2 text-xl font-bold font-heading text-white text-center">
-                    Carlos Escobar N.
-                  </h3>
-
-                  <ul className="mb-6 text-white">
-                    {serviceData1.map((text, index) => (
-                      <li className="mb-4 flex justify-center" key={`${text}-${index}`}>
-                        <span>{text}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    className="inline-block text-[rgb(42,75,155)] text-center py-2 px-4 w-full
-                   contained-button transition-transform duration-300 hover:scale-110
-                   cursor-pointer bg-[rgb(255,255,255)] font-bold leading-loose mt-10 rounded-xl"
-                    aria-label="Get started">
-                    ¡Sobre mí!
-                  </button>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 place-items-center mt-10 sm:mt-16">
+              <div className="px-4">
+                <TeamCard
+                  name="Carlos Escobar N."
+                  role="Ingeniero FullStack"
+                  tagline="🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
+                  avatarSrc="/public/CarlosEscobar.jpeg"
+                  avatarAlt="Carlos Escobar"
+                  linkedin="https://www.linkedin.com/in/carlosesconav/"
+                  github="https://github.com/carlosesconav"
+                  email="mailto:carlos.escobar@webkode.co"
+                />
               </div>
-              <div className="w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0">
-                <div className="relative px-8 py-12 bg-[rgb(42,75,155)] rounded-3xl">
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2">
-                      <Kevinmorelo />
-                  </div>
-
-                  <h3 className="mt-16 mb-2 2xl:mb-4 text-2xl font-bold font-heading text-white text-center">
-                    Kevin Morelo V.
-                  </h3>
-
-                  <ul className="mb-14 text-white">
-                    {serviceData2.map((text, index) => (
-                      <li className="mb-4 flex justify-center" key={`${text}-${index}`}>
-                        <span>{text}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    className="inline-block text-[rgb(42,75,155)] text-center py-2 px-4 w-full
-                   contained-button leading-loose transition-transform duration-300
-                   hover:scale-110 font-bold mt-10 rounded-xl cursor-pointer bg-[rgb(255,255,255)]"
-                    aria-label="Get started">
-                    ¡Sobre mí!
-                  </button>
-                </div>
+              <div className="px-4">
+                <TeamCard
+                  name="Kevin Morelo V."
+                  role="Ingeniero FullStack"
+                  tagline="🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
+                  avatarSrc="/public/kevinmorelo.jpeg"
+                  avatarAlt="Kevin Morelo"
+                  linkedin="https://www.linkedin.com/in/kevinmorelo/"
+                  github="https://github.com/KevinMorelo"
+                  email="mailto:kevin.morelo@webkode.co"
+                />
               </div>
-              <div className="w-[350px] sm:w-[380px] lg:w-1/3 px-4 mb-8 lg:mb-0">
-                <div className="relative px-8 py-12 bg-[rgb(42,75,155)] rounded-3xl">
-                  <div className="absolute -top-12 left-1/2 -translate-x-1/2">
-                      <Kevinmorelo />
-                  </div>
-
-                  <h3 className="mt-16 mb-2 text-xl font-bold font-heading text-white text-center">
-                    Victor Palacios S.
-                  </h3>
-
-                  <ul className="mb-6 text-white">
-                    {serviceData3.map((text, index) => (
-                      <li className="mb-4 flex justify-center" key={`${text}-${index}`}>
-                        <span>{text}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    className="inline-block text-[rgb(42,75,155)] text-center py-2 px-4 w-full
-                   contained-button font-bold leading-loose mt-10 rounded-xl cursor-pointer
-                   transition-transform duration-300 hover:scale-110 bg-[rgb(255,255,255)]"
-                    aria-label="Get started">
-                    ¡Sobre mí!
-                  </button>
-                </div>
+              <div className="px-4">
+                <TeamCard
+                  name="Victor Palacios S."
+                  role="Ingeniero FullStack"
+                  tagline="🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
+                  avatarSrc="/public/VictorPalacios.jpeg"
+                  avatarAlt="Victor Palacios"
+                  linkedin="https://www.linkedin.com/in/victormanuelpalacios/"
+                  github="https://github.com/VictorMpalacios"
+                  email="mailto:victor.palacios@webkode.co"
+                />
               </div>
             </div>
 
