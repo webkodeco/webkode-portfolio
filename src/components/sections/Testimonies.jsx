@@ -25,7 +25,7 @@ const testimonialsData = [
 ];
 
 export const Testimonies = () => (
-  <section className="w-full flex justify-center pt-16 text-white mb-16 lg:mb-32 bg-gray-900 relative">
+  <section className="w-full flex justify-center pt-16 text-white mb-16 lg:mb-32 bg-black relative">
     <div className="absolute -top-16" id="feedback" />
     <div className="flex flex-col w-full lg:w-[1150px] justify-center">
       <motion.div

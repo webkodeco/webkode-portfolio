@@ -41,6 +41,8 @@ export const We = () => {
                   linkedin="https://www.linkedin.com/in/carlosesconav/"
                   github="https://github.com/carlosesconav"
                   email="mailto:carlos.escobar@webkode.co"
+                  bio="Más de 6 años construyendo productos escalables. Me enfoco en performance, DX y buenas prácticas (clean architecture, testing y CI/CD)."
+                  skills={["Java", "Spring", "SQL", "Angular", "AWS"]}
                 />
               </div>
               <div className="px-4">
@@ -53,6 +55,8 @@ export const We = () => {
                   linkedin="https://www.linkedin.com/in/kevinmorelo/"
                   github="https://github.com/KevinMorelo"
                   email="mailto:kevin.morelo@webkode.co"
+                  bio="Fullstack con foco en producto. Me gusta convertir ideas en features medibles, con obsesión por el performance y la experiencia de usuario."
+                  skills={["React", "Node.js", "PostgreSQL", "Docker", "CI/CD"]}
                 />
               </div>
               <div className="px-4">
@@ -65,6 +69,8 @@ export const We = () => {
                   linkedin="https://www.linkedin.com/in/victormanuelpalacios/"
                   github="https://github.com/VictorMpalacios"
                   email="mailto:victor.palacios@webkode.co"
+                  bio="Frontend enfocado en accesibilidad y microinteracciones. Experiencia en design systems, testing y performance web."
+                  skills={["React", "TypeScript", "Vite", "Playwright", "Design System"]}
                 />
               </div>
             </div>
