@@ -279,7 +279,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
         <div
           id="crud-modal"
           tabIndex={-1}
-          className="w-full h-full fixed top-0 left-0 flex z-50 justify-center items-center"
+          className="w-full h-full fixed top-0 left-0 flex z-50 justify-center items-center overscroll-none touch-none"
           onClick={() => setIsOpen(false)}
         >
           <div
@@ -316,7 +316,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       ref={firstFieldRef}
                       type="text"
                       id="contact-name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base md:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Ingresa tu nombre"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -335,7 +335,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       autoComplete="email"
                       type="email"
                       id="contact-email"
-                      className="bg-gray-600 border border-gray-300 text-white text-sm rounded-lg block w-full p-2.5"
+                      className="bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg block w-full p-2.5"
                       placeholder="Ingresa tu correo electrónico"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -374,14 +374,14 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       <input
                         type="text"
                         readOnly
-                        className="w-24 bg-gray-700 border border-gray-300 text-white text-sm rounded-lg p-2.5 text-center"
+                        className="w-24 bg-gray-700 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5 text-center"
                         value={country ? country.dial : ""}
                         placeholder="+57"
                       />
                       <input
                         type="tel"
                         id="contact-phone"
-                        className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
+                        className="flex-1 bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5"
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
                         onChange={(e) => {
@@ -421,19 +421,19 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   type="button"
                   disabled={submitting}
                   className={`text-white inline-flex items-center 
-    ${submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] hover:scale-110"}
-    outline-none font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 text-center`}
+                            ${!isValid || submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] md:hover:scale-110"}
+                            outline-none font-medium rounded-lg transition-transform duration-300 text-base md:text-sm px-5 py-2.5 text-center`}
                   onClick={handleClick}
                 >
                   {submitting ? "Enviando..." : "Enviar"}
                 </button>
-              </div>
-              {status === "success" && (
-  <p className="mt-3 text-sm text-green-400">¡Enviado con éxito! Te contactaremos pronto.</p>
+                              {status === "success" && (
+  <p className="mt-4 mb-2 text-sm text-green-400">¡Enviado con éxito! Te contactaremos pronto.</p>
 )}
 {status === "error" && (
-  <p className="mt-3 text-sm text-red-400">No pudimos enviar. Intenta nuevamente.</p>
+  <p className="mt-4 mb2 text-sm text-red-400">No pudimos enviar. Intenta nuevamente.</p>
 )}
+              </div>
             </div>
           </div>
         </div>
