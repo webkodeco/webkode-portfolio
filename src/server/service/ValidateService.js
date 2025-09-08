@@ -9,10 +9,4 @@ const validateEmail = (value) => {
   );
 };
 
-const validateTel = (value) => {
-  return (
-    validateTel(value) && !/^\d{7,15}$/.test(phone.replace(/\D/g, ""))
-  );
-};
-
-export { validateString, validateEmail, validateTel };
+export { validateString, validateEmail };

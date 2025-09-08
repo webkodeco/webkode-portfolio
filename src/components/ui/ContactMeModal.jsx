@@ -2,7 +2,6 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseModal } from "../../assets/icons/CloseModal";
 import { saveData } from "../../server/service/CustomerService";
-import { validateEmail} from "../../server/service/ValidateService";
 
 const toFlagEmoji = (iso2) =>
   iso2
@@ -318,7 +317,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
-                    {email && validateEmail && (
+                    {email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
                       <p className="text-xs text-red-400 mt-1">
                         Formato de correo no válido
                       </p>
@@ -370,7 +369,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                         required
                       />
                     </div>
-                    {phone && (
+                    {phone && !/^\d{7,15}$/.test(phone.replace(/\D/g, "")) && (
                       <p className="text-xs text-red-400 mt-1">
                         El número debe tener entre 7 y 15 dígitos
                       </p>
