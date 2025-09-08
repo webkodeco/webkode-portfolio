@@ -3,11 +3,11 @@ import { TeamCard } from "../ui/TeamCard";
 
 const serviceData1 = {
   role: "Ingeniero de Desarrollo FullStack",
-  stack: "🚀 Java - SpringBoot - Micronaut | PHP - Laravel | DB Sql & NoSQL | VueJs & AstroJs | 👾 Enfoque en rendimiento y escalabilidad 🤖"
+  stack: "🚀 Java · SpringBoot · Micronaut · PHP · Laravel · Sql · NoSQL · VueJs · AstroJs | 👾 Enfoque en rendimiento y escalabilidad 🤖"
 };
 const serviceData2 = {
   role: "Ingeniero de Desarrollo FullStack",
-  stack: "🚀 Java & Sql & Angular | 🎯 Enfoque en producto y performance"
+  stack: "💻 Java · AWS · Node.js · SQL · Angular · Python · AzureDevops | 🎯 Enfoque en producto, performance y escalabilidad"
 };
 const serviceData3 = {
   role: "Ingeniero de Desarrollo FrontEnd",
@@ -60,8 +60,8 @@ export const We = () => {
                   linkedin="https://www.linkedin.com/in/kevinmorelo/"
                   github="https://github.com/KevinMorelo"
                   email="mailto:kevin.morelo@webkode.co"
-                  bio="Fullstack con foco en producto. Me gusta convertir ideas en features medibles, con obsesión por el performance y la experiencia de usuario."
-                  skills={["React", "Node.js", "PostgreSQL", "Docker", "CI/CD"]}
+                  bio="Fullstack con visión emprendedora. Disfruto transformar ideas en productos digitales medibles, con obsesión por la optimización, la experiencia de usuario y la integración tecnológica."
+                  skills={["Java", "JavaScript", "Node.js", "PostgreSQL", "AWS", "Docker", "CI/CD", "Angular", "Python", "JUnit"]}
                 />
               </div>
               <div className="px-4">
