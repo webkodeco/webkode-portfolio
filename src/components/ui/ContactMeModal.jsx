@@ -374,20 +374,17 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       <input
                         type="text"
                         readOnly
-                        className="w-24 bg-gray-700 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5 text-center"
+                        className="w-20 flex-shrink-0 bg-gray-700 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5 text-center"
                         value={country ? country.dial : ""}
                         placeholder="+57"
                       />
                       <input
                         type="tel"
                         id="contact-phone"
-                        className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
+                        className="flex-1 min-w-0 bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5"
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
-                        onChange={(e) => {
-                          const onlyNums = e.target.value.replace(/\D/g, "");
-                          setPhone(onlyNums);
-                        }}
+                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                         inputMode="numeric"
                         pattern="\d*"
                         required
