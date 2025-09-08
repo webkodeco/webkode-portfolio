@@ -202,13 +202,9 @@ export const ContactMeModal = ({ setIsOpen }) => {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
   const isValid = name.trim() && email.trim() && country?.name && phone.trim();
-  const cleanedPhone = phone.replace(/\D/g, "");
   const handleClick = async () => {
-    const cleanedPhone = phone.replace(/\D/g, "");
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const phoneOk = /^\d{7,15}$/.test(cleanedPhone);
-    const isValid = name.trim() && emailOk && country?.name && phoneOk;
-    const resetForm = () => {
+  const cleanedPhone = phone.replace(/\D/g, "");
+  const resetForm = () => {
       setName("");
       setEmail("");
       setPhone("");
@@ -255,6 +251,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
   };
 
   const firstFieldRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     firstFieldRef.current?.focus();
@@ -264,8 +261,9 @@ export const ContactMeModal = ({ setIsOpen }) => {
   }, [setIsOpen]);
 
   useEffect(() => {
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
+    return () => { document.body.style.overflow = prev; };
   }, []);
 
   return (
@@ -276,12 +274,12 @@ export const ContactMeModal = ({ setIsOpen }) => {
         transition={{ duration: 0.3 }}
         exit={{ opacity: 0 }}
       >
-        <div
-          id="crud-modal"
-          tabIndex={-1}
-          className="w-full h-full fixed top-0 left-0 flex z-50 justify-center items-center overscroll-none touch-none"
-          onClick={() => setIsOpen(false)}
-        >
+      <div
+        id="crud-modal"
+        tabIndex={-1}
+        className="fixed inset-0 z-50 flex justify-center items-center overscroll-contain"
+        onClick={() => setIsOpen(false)}
+      >
           <div
             className="relative p-4 w-full max-w-md max-h-full"
             onClick={(e) => e.stopPropagation()}
@@ -302,7 +300,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                 </button>
               </div>
 
-              <div className="p-4 md:p-5">
+              <div ref={contentRef} className="p-4 md:p-5 max-h-[calc(100dvh-10rem)] overflow-y-auto overscroll-contain">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
                     <label
@@ -425,10 +423,18 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   {submitting ? "Enviando..." : "Enviar"}
                 </button>
                 {status === "success" && (
-                  <p className="mt-4 mb-2 text-sm text-green-400">¡Enviado con éxito! Te contactaremos pronto.</p>
+                  <div className="sticky top-0 z-10 mb-3">
+                    <p className="bg-green-900/40 border border-green-500 text-green-300 rounded-md px-3 py-2 text-sm">
+                      ¡Enviado con éxito! Te contactaremos pronto.
+                    </p>
+                  </div>
                 )}
                 {status === "error" && (
-                  <p className="mt-4 mb2 text-sm text-red-400">No pudimos enviar. Intenta nuevamente.</p>
+                  <div className="sticky top-0 z-10 mb-3">
+                    <p className="bg-red-900/40 border border-red-500 text-red-300 rounded-md px-3 py-2 text-sm">
+                      No pudimos enviar. Intenta nuevamente.
+                    </p>
+                  </div>
                 )}
               </div>
             </div>
