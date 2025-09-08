@@ -162,7 +162,7 @@ export default function CountryDropdown({
 }
 
 export const ContactMeModal = ({ setIsOpen }) => {
-  const [country, setCountry] = useState(null);
+  const [country, setCountry] = useState(() => COUNTRIES.find(c => c.iso2 === "CO"));
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
