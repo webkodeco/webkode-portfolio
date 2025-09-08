@@ -2,15 +2,14 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseModal } from "../../assets/icons/CloseModal";
 import { saveData } from "../../server/service/CustomerService";
+import CenteredToast from "./CenteredToast";
 
+// Utils banderas
 const toFlagEmoji = (iso2) =>
-  iso2
-    .toUpperCase()
-    .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+  iso2.toUpperCase().replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+const getFlagUrl = (iso2) => `https://flagcdn.com/24x18/${iso2.toLowerCase()}.png`;
 
-const getFlagUrl = (iso2) =>
-  `https://flagcdn.com/24x18/${iso2.toLowerCase()}.png`;
-
+// Países
 const COUNTRIES = [
   { id: 1, name: "Afganistán", dial: "+93", iso2: "AF" },
   { id: 2, name: "Albania", dial: "+355", iso2: "AL" },
@@ -73,35 +72,38 @@ const COUNTRIES = [
   { id: 59, name: "Sudáfrica", dial: "+27", iso2: "ZA" },
 ];
 
-export default function CountryDropdown({
-  value,
-  onChange,
-  countries,
-  defaultCountry = "CO",
-}) {
+function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
   const selected = useMemo(() => {
-    if (value) return countries.find((c) => c.iso2 === value.iso2) || null;
+    if (!countries?.length) return null;
+    if (typeof value === "string") {
+      return countries.find((c) => c.iso2 === value) || countries.find((c) => c.iso2 === defaultCountry) || null;
+    }
+    if (value?.iso2) {
+      return countries.find((c) => c.iso2 === value.iso2) || countries.find((c) => c.iso2 === defaultCountry) || null;
+    }
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
   useEffect(() => {
-    const onClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
+    const def = countries.find((c) => c.iso2 === defaultCountry) || null;
+    if (!value && def) onChange(def);
+  }, []);
+
+  useEffect(() => {
+    const onClickOutside = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
   return (
     <div ref={ref} className="relative w-full">
-      {/* Botón */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full bg-gray-600 text-white text-left p-2.5 rounded-lg border border-gray-300 focus:outline-none"
+        className="w-full bg-gray-600 text-white text-left p-2.5 rounded-lg border border-gray-300 focus:outline-none text-base md:text-sm"
       >
         {selected ? (
           <span className="flex items-center gap-2">
@@ -110,10 +112,7 @@ export default function CountryDropdown({
               alt={`Bandera de ${selected.name}`}
               className="inline-block h-4 w-6 rounded-sm object-cover"
               loading="lazy"
-              onError={(e) => {
-                // Fallback: si falla la imagen, ocultamos el <img> y mostramos solo texto
-                e.currentTarget.style.display = "none";
-              }}
+              onError={(e) => (e.currentTarget.style.display = "none")}
             />
             <span>{selected.name}</span>
           </span>
@@ -122,35 +121,27 @@ export default function CountryDropdown({
         )}
       </button>
 
-      {/* Lista (siempre hacia abajo) */}
       {open && (
         <ul
-          className="
-            absolute top-full mt-1 w-full z-50
-            max-h-56 overflow-y-auto
-            bg-gray-700 border border-gray-600 rounded-lg shadow-lg
-          "
+          role="listbox"
+          className="absolute top-full mt-1 w-full z-50 max-h-56 overflow-y-auto bg-gray-700 border border-gray-600 rounded-lg shadow-lg"
         >
           {countries.map((c) => (
             <li
+              role="option"
+              aria-selected={selected?.iso2 === c.iso2}
               key={c.id}
-              onClick={() => {
-                onChange(c); // devuelvo el objeto completo
-                setOpen(false);
-              }}
-              className="
-                px-3 py-2 cursor-pointer flex items-center gap-2
-                text-white hover:bg-gray-600
-              "
+              onClick={() => { onChange(c); setOpen(false); }}
+              className={`px-3 py-2 cursor-pointer flex items-center gap-2 text-white hover:bg-gray-600 ${
+                selected?.iso2 === c.iso2 ? "bg-gray-600" : ""
+              }`}
             >
               <img
                 src={getFlagUrl(c.iso2)}
                 alt={`Bandera de ${c.name}`}
                 className="inline-block h-4 w-6 rounded-sm object-cover"
                 loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
+                onError={(e) => (e.currentTarget.style.display = "none")}
               />
               <span>{c.name}</span>
             </li>
@@ -168,22 +159,81 @@ export const ContactMeModal = ({ setIsOpen }) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
+  const [submitting, setSubmitting] = useState(false);
+  const [toast, setToast] = useState(null);
+  const contentRef = useRef(null);
+  const firstFieldRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneRef = useRef(null);
+
+  useEffect(() => {
+    firstFieldRef.current?.focus();
+    const onKey = (e) => e.key === "Escape" && setIsOpen(false);
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [setIsOpen]);
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const phoneOk = /^\d{7,15}$/.test(phone);
+  const isValid = name.trim() && emailOk && country?.name && phoneOk;
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setMessage("");
+    const def = COUNTRIES.find((c) => c.iso2 === "CO");
+    setCountry(def || null);
+  };
+
   const handleClick = async () => {
-    if (country != null && country.name != null) {
-      const result = await saveData(name, email, country.name, phone, message);
-      if (result) {
-        await fetch("/api/MailService", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customerName: name,
-            customerEmail: email,
-            customerCountry: country.name,
-            customerPhone: phone,
-            message: message
+    if (!isValid || submitting) return;
+
+    setSubmitting(true);
+    const payload = {
+      customerName: name.trim(),
+      customerEmail: email.trim(),
+      customerCountry: country.name,
+      customerPhone: `${country.dial} ${phone}`,
+      message: message.trim(),
+    };
+
+    const minVisible = new Promise((r) => setTimeout(r, 600));
+
+    try {
+      const [results] = await Promise.all([
+        Promise.allSettled([
+          saveData(name, email, country.name, phone, message),
+          fetch("/api/MailService", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
           }),
-        });
+        ]),
+        minVisible,
+      ]);
+
+      const allOk = results.every((r) => r.status === "fulfilled");
+      if (allOk) {
+        resetForm();
+        contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+        setToast({ type: "success", text: "¡Enviado con éxito!", sub: "Te contactaremos pronto." });
+        setTimeout(() => setToast(null), 1800);
+      } else {
+        setToast({ type: "error", text: "No pudimos enviar", sub: "Inténtalo nuevamente." });
+        setTimeout(() => setToast(null), 2000);
       }
+    } catch (err) {
+      console.error("Error al enviar:", err);
+      setToast({ type: "error", text: "Ocurrió un error inesperado", sub: "Vuelve a intentarlo." });
+      setTimeout(() => setToast(null), 2000);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -192,141 +242,143 @@ export const ContactMeModal = ({ setIsOpen }) => {
       <motion.div
         initial={{ opacity: 0, zIndex: 50 }}
         animate={{ opacity: 1, zIndex: 50 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.25 }}
         exit={{ opacity: 0 }}
       >
         <div
           id="crud-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-title"
           tabIndex={-1}
-          className="w-full h-full fixed top-0 left-0 flex z-50 justify-center items-center"
+          className="fixed inset-0 z-50 flex justify-center items-center overscroll-contain"
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="relative p-4 w-full max-w-md max-h-full"
+            className="relative p-4 w-full max-w-md max-h-[100dvh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative rounded-2xl shadow-sm bg-gray-800">
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
-                <h3 className="text-lg font-semibold text-white">
+              <div className="sticky top-0 z-20 flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600 bg-gray-800/95 backdrop-blur">
+                <h3 id="contact-title" className="text-lg font-semibold text-white">
                   Ingresa tus datos de contacto
                 </h3>
                 <button
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg 
-                  text-sm w-8 h-8 ms-auto inline-flex cursor-pointer justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  aria-label="Cerrar"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg
+                  w-8 h-8 inline-flex cursor-pointer justify-center items-center md:hover:bg-gray-600 md:hover:text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   <CloseModal />
-                  <span className="sr-only">Cerrar modal</span>
                 </button>
               </div>
-
-              <div className="p-4 md:p-5">
+              <CenteredToast toast={toast} />
+              <div
+                ref={contentRef}
+                className="p-4 md:p-5 max-h-[calc(100dvh-10rem)] overflow-y-auto overscroll-contain"
+                style={{ WebkitOverflowScrolling: "touch" }}
+              >
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-name"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-name" className="block mb-2 text-left text-sm font-medium text-white">
                       Nombre (*):
                     </label>
                     <input
+                      ref={firstFieldRef}
                       type="text"
                       id="contact-name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      autoComplete="name"
+                      enterKeyHint="next"
+                      onKeyDown={(e) => e.key === "Enter" && emailRef.current?.focus()}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base md:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white scroll-mt-24"
                       placeholder="Ingresa tu nombre"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
                     />
                   </div>
-
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-email"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-email" className="block mb-2 text-left text-sm font-medium text-white">
                       Correo electrónico (*):
                     </label>
                     <input
+                      ref={emailRef}
                       type="email"
                       id="contact-email"
-                      className="bg-gray-600 border border-gray-300 text-white text-sm rounded-lg block w-full p-2.5"
+                      autoComplete="email"
+                      enterKeyHint="next"
+                      onKeyDown={(e) => e.key === "Enter" && phoneRef.current?.focus()}
+                      className="bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg block w-full p-2.5 scroll-mt-24"
                       placeholder="Ingresa tu correo electrónico"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
+                    {email && !emailOk && (
+                      <p className="text-xs text-red-400 mt-1">Formato de correo no válido.</p>
+                    )}
                   </div>
-
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-country"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-country" className="block mb-2 text-left text-sm font-medium text-white">
                       País (*):
                     </label>
                     <CountryDropdown
                       value={country}
-                      onChange={(c) => setCountry(c)}
+                      onChange={setCountry}
                       countries={COUNTRIES}
                       defaultCountry="CO"
                     />
                   </div>
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-phone"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-phone" className="block mb-2 text-left text-sm font-medium text-white">
                       Número de contacto (*):
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex rounded-lg overflow-hidden border border-gray-300">
+                      <span className="bg-gray-700 text-white px-3 py-2 text-base md:text-sm flex items-center">
+                        {country?.dial || "+57"}
+                      </span>
                       <input
-                        type="text"
-                        readOnly
-                        className="w-24 bg-gray-700 border border-gray-300 text-white text-sm rounded-lg p-2.5 text-center"
-                        value={country ? country.dial : ""}
-                        placeholder="+57"
-                      />
-                      <input
-                        type="number"
+                        ref={phoneRef}
+                        type="tel"
                         id="contact-phone"
-                        className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
+                        className="flex-1 min-w-0 bg-gray-600 text-white text-base md:text-sm p-2.5 scroll-mt-24"
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                        inputMode="numeric"
+                        pattern="\d*"
+                        autoComplete="tel"
                         required
                       />
                     </div>
+                    {phone && !phoneOk && (
+                      <p className="text-xs text-red-400 mt-1">El número debe tener entre 7 y 15 dígitos.</p>
+                    )}
                   </div>
-
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-message"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-message" className="block mb-2 text-left text-sm font-medium text-white">
                       Déjanos un mensaje:
                     </label>
                     <textarea
                       id="contact-message"
                       rows={4}
-                      className="block p-2.5 w-full text-sm text-white bg-gray-600 rounded-lg border border-gray-300"
+                      className="block p-2.5 w-full text-white bg-gray-600 rounded-lg border border-gray-300 text-base md:text-sm scroll-mt-24"
                       placeholder="Escribe un mensaje"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                     />
                   </div>
                 </div>
-
                 <button
-                  type="submit"
-                  className="text-white inline-flex items-center 
-                    bg-[rgb(42,75,155)] hover:scale-110 outline-none  
-                    font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 
-                    text-center cursor-pointer"
+                  type="button"
+                  disabled={!isValid || submitting}
+                  className={`text-white inline-flex items-center
+                    ${!isValid || submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] md:hover:scale-110"}
+                    outline-none font-medium rounded-lg transition-transform duration-300 text-base md:text-sm px-5 py-2.5 text-center`}
                   onClick={handleClick}
                 >
-                  Enviar
+                  {submitting ? "Enviando..." : "Enviar"}
                 </button>
               </div>
             </div>
