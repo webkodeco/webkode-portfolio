@@ -88,6 +88,10 @@ export default function CountryDropdown({
   }, [countries, value, defaultCountry]);
 
   useEffect(() => {
+    if (!value && selected) onChange(selected);
+  }, [value, selected, onChange]);
+
+  useEffect(() => {
     const onClickOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
@@ -289,7 +293,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                         placeholder="+57"
                       />
                       <input
-                        type="number"
+                        type="tel"
                         id="contact-phone"
                         className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
                         placeholder="Ingresa tu número de contacto"
