@@ -200,31 +200,54 @@ export const ContactMeModal = ({ setIsOpen }) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState(null);
   const isValid = name.trim() && email.trim() && country?.name && phone.trim();
   const cleanedPhone = phone.replace(/\D/g, "");
   const handleClick = async () => {
+  const cleanedPhone = phone.replace(/\D/g, "");
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const phoneOk = /^\d{7,15}$/.test(cleanedPhone);
+  const isValid = name.trim() && emailOk && country?.name && phoneOk;
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setMessage("");
+    const def = COUNTRIES.find(c => c.iso2 === "CO");
+    setCountry(def || null);
+  };
     if (!isValid || submitting) return;
+    setStatus(null);
     setSubmitting(true);
     const payload = {
       customerName: name,
       customerEmail: email,
       customerCountry: country.name,
       customerPhone: `${country.dial} ${cleanedPhone}`,
-      message,
+      message: message.trim(),
     };
     try {
-      const [saveRes, mailRes] = await Promise.allSettled([
-        saveData(name, email, country.name, phone, message),
-        fetch("/api/MailService", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }),
+      const [results] = await Promise.all([
+        Promise.allSettled([
+          saveData(name, email, country.name, phone, message),
+          fetch("/api/MailService", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }),
+        ]),
+        minVisible,
       ]);
-      console.log("saveData =>", saveRes);
-      console.log("MailService =>", mailRes);
-    } catch (err) {
-      console.error("Error al enviar:", err);
+      const allOk = results.every((r) => r.status === "fulfilled");
+      if (allOk) {
+        setStatus("success");
+        resetForm();
+      } else {
+        setStatus("error");
+      }
+    } catch (e) {
+      console.error("Error al enviar:", e);
+      setStatus("error");
     } finally {
       setSubmitting(false);
     }
@@ -395,15 +418,21 @@ export const ContactMeModal = ({ setIsOpen }) => {
                 </div>
                 <button
                   type="button"
-                  disabled={!isValid || submitting}
+                  disabled={submitting}
                   className={`text-white inline-flex items-center 
-    ${!isValid || submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] hover:scale-110"}
+    ${submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] hover:scale-110"}
     outline-none font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 text-center`}
                   onClick={handleClick}
                 >
                   {submitting ? "Enviando..." : "Enviar"}
                 </button>
               </div>
+              {status === "success" && (
+  <p className="mt-3 text-sm text-green-400">¡Enviado con éxito! Te contactaremos pronto.</p>
+)}
+{status === "error" && (
+  <p className="mt-3 text-sm text-red-400">No pudimos enviar. Intenta nuevamente.</p>
+)}
             </div>
           </div>
         </div>
