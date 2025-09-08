@@ -226,6 +226,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
       customerPhone: `${country.dial} ${cleanedPhone}`,
       message: message.trim(),
     };
+  const minVisible = new Promise((r) => setTimeout(r, 600));
     try {
       const [results] = await Promise.all([
         Promise.allSettled([
