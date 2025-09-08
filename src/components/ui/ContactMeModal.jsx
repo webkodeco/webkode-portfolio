@@ -83,12 +83,31 @@ export default function CountryDropdown({
   const ref = useRef(null);
 
   const selected = useMemo(() => {
-    if (value) return countries.find((c) => c.iso2 === value.iso2) || null;
+    if (!countries?.length) return null;
+
+    if (typeof value === "string") {
+      return (
+        countries.find((c) => c.iso2 === value) ||
+        countries.find((c) => c.iso2 === defaultCountry) ||
+        null
+      );
+    }
+
+    if (value?.iso2) {
+      return (
+        countries.find((c) => c.iso2 === value.iso2) ||
+        value ||
+        null
+      );
+    }
+
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
   useEffect(() => {
-    if (!value && selected) onChange(selected);
+    if (!value && selected) {
+      onChange(selected);
+    }
   }, [value, selected, onChange]);
 
   useEffect(() => {
@@ -115,7 +134,6 @@ export default function CountryDropdown({
               className="inline-block h-4 w-6 rounded-sm object-cover"
               loading="lazy"
               onError={(e) => {
-                // Fallback: si falla la imagen, ocultamos el <img> y mostramos solo texto
                 e.currentTarget.style.display = "none";
               }}
             />
@@ -142,10 +160,12 @@ export default function CountryDropdown({
                 onChange(c); // devuelvo el objeto completo
                 setOpen(false);
               }}
-              className="
+              className={`
                 px-3 py-2 cursor-pointer flex items-center gap-2
                 text-white hover:bg-gray-600
-              "
+                ${selected?.iso2 === c.iso2 ? "bg-gray-600" : ""}
+              `}
+              aria-selected={selected?.iso2 === c.iso2}
             >
               <img
                 src={getFlagUrl(c.iso2)}
@@ -166,7 +186,10 @@ export default function CountryDropdown({
 }
 
 export const ContactMeModal = ({ setIsOpen }) => {
-  const [country, setCountry] = useState(() => COUNTRIES.find(c => c.iso2 === "CO"));
+  // Asegura que el estado SIEMPRE sea un objeto de país
+  const [country, setCountry] = useState(() =>
+    COUNTRIES.find((c) => c.iso2 === "CO")
+  );
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -184,7 +207,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
             customerEmail: email,
             customerCountry: country.name,
             customerPhone: phone,
-            message: message
+            message: message,
           }),
         });
       }
@@ -271,12 +294,13 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       País (*):
                     </label>
                     <CountryDropdown
-                      value={country}
-                      onChange={(c) => setCountry(c)}
+                      value={country}                 // puede ser objeto o string, el dropdown lo soporta
+                      onChange={(c) => setCountry(c)} // guardamos SIEMPRE objeto
                       countries={COUNTRIES}
                       defaultCountry="CO"
                     />
                   </div>
+
                   <div className="col-span-2">
                     <label
                       htmlFor="contact-phone"
