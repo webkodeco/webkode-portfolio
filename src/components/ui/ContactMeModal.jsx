@@ -215,21 +215,30 @@ export const ContactMeModal = ({ setIsOpen }) => {
     name.trim() && email.trim() && country?.name && phone.trim();
 
   const handleClick = async () => {
-    if (!isValid) return;
-
-    const result = await saveData(name, email, country.name, phone, message);
-    if (result) {
-      await fetch("/api/MailService", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customerName: name,
-          customerEmail: email,
-          customerCountry: country.name,
-          customerPhone: phone,
-          message: message,
+    if (!country?.name) {
+      console.warn("Country vacío: no se envía.");
+      return;
+    }
+    const payload = {
+      customerName: name,
+      customerEmail: email,
+      customerCountry: country.name,
+      customerPhone: phone,
+      message,
+    };
+    try {
+      const [saveRes, mailRes] = await Promise.allSettled([
+        saveData(name, email, country.name, phone, message),
+        fetch("/api/MailService", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         }),
-      });
+      ]);
+      console.log("saveData =>", saveRes);
+      console.log("MailService =>", mailRes);
+    } catch (err) {
+      console.error("Error al enviar:", err);
     }
   };
 
@@ -366,16 +375,15 @@ export const ContactMeModal = ({ setIsOpen }) => {
                 </div>
 
                 <button
-                  type="submit"
-                  disabled={!isValid}
-                  className={`text-white inline-flex items-center 
-                    ${isValid ? "bg-[rgb(42,75,155)] hover:scale-110 cursor-pointer" : "bg-gray-500 cursor-not-allowed"}
-                    outline-none font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 text-center`}
-                  onClick={handleClick}
-                  aria-disabled={!isValid}
-                >
-                  Enviar
-                </button>
+                  type="button"
+                   className="text-white inline-flex items-center 
+                     bg-[rgb(42,75,155)] hover:scale-110 outline-none  
+                     font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 
+                     text-center cursor-pointer"
+                   onClick={handleClick}
+                 >
+                   Enviar
+                 </button>
               </div>
             </div>
           </div>
