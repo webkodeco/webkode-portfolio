@@ -170,38 +170,21 @@ export const ContactMeModal = ({ setIsOpen }) => {
   const [message, setMessage] = useState("");
 
   const handleClick = async () => {
-    console.log("entro al handler")
-
-    const result = await saveData(name, email, country.name, phone, message);
-
-    console.log("result: ", result)
-
-    if (result) {
-      toast.success("¡Datos enviados correctamente!", {
-        style: {
-          border: "1px solid #713200",
-          padding: "16px",
-          color: "#713200",
-        },
-        iconTheme: {
-          primary: "#713200",
-          secondary: "#FFFAEE",
-        },
-      });
-    } else {
-       console.log("entro al else")
-       toast.error("¡Error! rectifique los datos ingresados");
-      // toast.error("¡Error! rectifique los datos ingresados", {
-      //   style: {
-      //     border: "1px solid #713200",
-      //     padding: "16px",
-      //     color: "#713200",
-      //   },
-      //   iconTheme: {
-      //     primary: "#713200",
-      //     secondary: "#FFFAEE",
-      //   },
-      // });
+    if (country != null && country.name != null) {
+      const result = await saveData(name, email, country.name, phone, message);
+      if (result) {
+        await fetch("/api/MailService", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customerName: name,
+            customerEmail: email,
+            customerCountry: country.name,
+            customerPhone: phone,
+            message: message
+          }),
+        });
+      }
     }
   };
 

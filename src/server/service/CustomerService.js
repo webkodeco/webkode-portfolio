@@ -1,7 +1,7 @@
 import { db } from "../firebase/Client";
 import { doc, setDoc } from "firebase/firestore";
 import { validateEmail, validateString } from "./ValidateService";
-import { v4 as uuidv4 } from "uuid"; // 👈 instala con npm i uuid
+import { v4 as uuidv4 } from "uuid";
 
 export const saveData = async (
   customerName,
@@ -10,7 +10,6 @@ export const saveData = async (
   customerPhone,
   message
 ) => {
-
   if (
     validateString(customerName) &&
     validateEmail(customerEmail) &&
