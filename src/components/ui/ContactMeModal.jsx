@@ -204,18 +204,18 @@ export const ContactMeModal = ({ setIsOpen }) => {
   const isValid = name.trim() && email.trim() && country?.name && phone.trim();
   const cleanedPhone = phone.replace(/\D/g, "");
   const handleClick = async () => {
-  const cleanedPhone = phone.replace(/\D/g, "");
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const phoneOk = /^\d{7,15}$/.test(cleanedPhone);
-  const isValid = name.trim() && emailOk && country?.name && phoneOk;
-  const resetForm = () => {
-    setName("");
-    setEmail("");
-    setPhone("");
-    setMessage("");
-    const def = COUNTRIES.find(c => c.iso2 === "CO");
-    setCountry(def || null);
-  };
+    const cleanedPhone = phone.replace(/\D/g, "");
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const phoneOk = /^\d{7,15}$/.test(cleanedPhone);
+    const isValid = name.trim() && emailOk && country?.name && phoneOk;
+    const resetForm = () => {
+      setName("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
+      const def = COUNTRIES.find(c => c.iso2 === "CO");
+      setCountry(def || null);
+    };
     if (!isValid || submitting) return;
     setStatus(null);
     setSubmitting(true);
@@ -226,7 +226,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
       customerPhone: `${country.dial} ${cleanedPhone}`,
       message: message.trim(),
     };
-  const minVisible = new Promise((r) => setTimeout(r, 600));
+    const minVisible = new Promise((r) => setTimeout(r, 600));
     try {
       const [results] = await Promise.all([
         Promise.allSettled([
@@ -407,7 +407,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                     <textarea
                       id="contact-message"
                       rows={4}
-                      className="block p-2.5 w-full text-sm text-white bg-gray-600 rounded-lg border border-gray-300"
+                      className="block p-2.5 w-full text-base md:text-sm text-white bg-gray-600 rounded-lg border border-gray-300"
                       placeholder="Escribe un mensaje"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
@@ -424,12 +424,12 @@ export const ContactMeModal = ({ setIsOpen }) => {
                 >
                   {submitting ? "Enviando..." : "Enviar"}
                 </button>
-                              {status === "success" && (
-  <p className="mt-4 mb-2 text-sm text-green-400">¡Enviado con éxito! Te contactaremos pronto.</p>
-)}
-{status === "error" && (
-  <p className="mt-4 mb2 text-sm text-red-400">No pudimos enviar. Intenta nuevamente.</p>
-)}
+                {status === "success" && (
+                  <p className="mt-4 mb-2 text-sm text-green-400">¡Enviado con éxito! Te contactaremos pronto.</p>
+                )}
+                {status === "error" && (
+                  <p className="mt-4 mb2 text-sm text-red-400">No pudimos enviar. Intenta nuevamente.</p>
+                )}
               </div>
             </div>
           </div>
