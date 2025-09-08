@@ -72,7 +72,6 @@ const COUNTRIES = [
   { id: 59, name: "Sudáfrica", dial: "+27", iso2: "ZA" },
 ];
 
-// Dropdown de países (robusto: value string u objeto; empuja default si falta)
 function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -88,11 +87,9 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
-  // Normaliza al montar
   useEffect(() => {
     const def = countries.find((c) => c.iso2 === defaultCountry) || null;
     if (!value && def) onChange(def);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -110,7 +107,6 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
       >
         {selected ? (
           <span className="flex items-center gap-2">
-            <span className="text-lg" aria-hidden="true">{toFlagEmoji(selected.iso2)}</span>
             <img
               src={getFlagUrl(selected.iso2)}
               alt={`Bandera de ${selected.name}`}
@@ -158,21 +154,19 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
 }
 
 export const ContactMeModal = ({ setIsOpen }) => {
-  // Estado
   const [country, setCountry] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState(""); // solo dígitos
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
-  const [toast, setToast] = useState(null); // { type, text, sub }
+  const [toast, setToast] = useState(null);
   const contentRef = useRef(null);
   const firstFieldRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
 
-  // A11y/UX: foco inicial, cerrar con ESC, bloquear fondo
   useEffect(() => {
     firstFieldRef.current?.focus();
     const onKey = (e) => e.key === "Escape" && setIsOpen(false);
@@ -185,7 +179,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
     };
   }, [setIsOpen]);
 
-  // Validaciones mínimas
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const phoneOk = /^\d{7,15}$/.test(phone);
   const isValid = name.trim() && emailOk && country?.name && phoneOk;
@@ -211,7 +204,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
       message: message.trim(),
     };
 
-    // mínimo visible para que "Enviando..." se note
     const minVisible = new Promise((r) => setTimeout(r, 600));
 
     try {
@@ -233,8 +225,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
         contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
         setToast({ type: "success", text: "¡Enviado con éxito!", sub: "Te contactaremos pronto." });
         setTimeout(() => setToast(null), 1800);
-        // Si deseas cerrar automáticamente:
-        // setTimeout(() => setIsOpen(false), 1900);
       } else {
         setToast({ type: "error", text: "No pudimos enviar", sub: "Inténtalo nuevamente." });
         setTimeout(() => setToast(null), 2000);
@@ -270,7 +260,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative rounded-2xl shadow-sm bg-gray-800">
-              {/* Header sticky para que el caret no quede detrás */}
               <div className="sticky top-0 z-20 flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600 bg-gray-800/95 backdrop-blur">
                 <h3 id="contact-title" className="text-lg font-semibold text-white">
                   Ingresa tus datos de contacto
@@ -285,17 +274,12 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   <CloseModal />
                 </button>
               </div>
-
-              {/* Toast centrado sobre el panel */}
               <CenteredToast toast={toast} />
-
-              {/* Contenido scrolleable */}
               <div
                 ref={contentRef}
                 className="p-4 md:p-5 max-h-[calc(100dvh-10rem)] overflow-y-auto overscroll-contain"
               >
                 <div className="grid gap-4 mb-4 grid-cols-2">
-                  {/* Nombre */}
                   <div className="col-span-2">
                     <label htmlFor="contact-name" className="block mb-2 text-left text-sm font-medium text-white">
                       Nombre (*):
@@ -314,8 +298,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       required
                     />
                   </div>
-
-                  {/* Email */}
                   <div className="col-span-2">
                     <label htmlFor="contact-email" className="block mb-2 text-left text-sm font-medium text-white">
                       Correo electrónico (*):
@@ -337,8 +319,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       <p className="text-xs text-red-400 mt-1">Formato de correo no válido.</p>
                     )}
                   </div>
-
-                  {/* País */}
                   <div className="col-span-2">
                     <label htmlFor="contact-country" className="block mb-2 text-left text-sm font-medium text-white">
                       País (*):
@@ -350,8 +330,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       defaultCountry="CO"
                     />
                   </div>
-
-                  {/* Teléfono: input group (prefijo + número) */}
                   <div className="col-span-2">
                     <label htmlFor="contact-phone" className="block mb-2 text-left text-sm font-medium text-white">
                       Número de contacto (*):
@@ -378,8 +356,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       <p className="text-xs text-red-400 mt-1">El número debe tener entre 7 y 15 dígitos.</p>
                     )}
                   </div>
-
-                  {/* Mensaje */}
                   <div className="col-span-2">
                     <label htmlFor="contact-message" className="block mb-2 text-left text-sm font-medium text-white">
                       Déjanos un mensaje:
@@ -394,8 +370,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
                     />
                   </div>
                 </div>
-
-                {/* Botón */}
                 <button
                   type="button"
                   disabled={!isValid || submitting}
