@@ -1,13 +1,16 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseModal } from "../../assets/icons/CloseModal";
+import { saveData } from "../../server/service/CustomerService";
+import toast from "react-hot-toast";
 
 const toFlagEmoji = (iso2) =>
   iso2
     .toUpperCase()
     .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
 
-const getFlagUrl = (iso2) => `https://flagcdn.com/24x18/${iso2.toLowerCase()}.png`;
+const getFlagUrl = (iso2) =>
+  `https://flagcdn.com/24x18/${iso2.toLowerCase()}.png`;
 
 const COUNTRIES = [
   { id: 1, name: "Afganistán", dial: "+93", iso2: "AF" },
@@ -71,7 +74,12 @@ const COUNTRIES = [
   { id: 59, name: "Sudáfrica", dial: "+27", iso2: "ZA" },
 ];
 
-function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) {
+export default function CountryDropdown({
+  value,
+  onChange,
+  countries,
+  defaultCountry = "CO",
+}) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -80,7 +88,6 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
-  
   useEffect(() => {
     const onClickOutside = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
@@ -88,7 +95,6 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
-
 
   return (
     <div ref={ref} className="relative w-full">
@@ -156,8 +162,6 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
   );
 }
 
-export default CountryDropdown;
-
 export const ContactMeModal = ({ setIsOpen }) => {
   const [country, setCountry] = useState(null);
   const [name, setName] = useState("");
@@ -165,19 +169,40 @@ export const ContactMeModal = ({ setIsOpen }) => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
-  // (ejemplo) manejo de submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const payload = {
-      name,
-      email,
-      // si necesitas enviar el código telefónico:
-      phone: phone,
-      country: country ? { name: country.name, dial: country.dial, iso2: country.iso2 } : null,
-      message,
-    };
-    console.log("Form payload:", payload);
-    // aquí llamarías a tu API
+  const handleClick = async () => {
+    console.log("entro al handler")
+
+    const result = await saveData(name, email, country.name, phone, message);
+
+    console.log("result: ", result)
+
+    if (result) {
+      toast.success("¡Datos enviados correctamente!", {
+        style: {
+          border: "1px solid #713200",
+          padding: "16px",
+          color: "#713200",
+        },
+        iconTheme: {
+          primary: "#713200",
+          secondary: "#FFFAEE",
+        },
+      });
+    } else {
+       console.log("entro al else")
+       toast.error("¡Error! rectifique los datos ingresados");
+      // toast.error("¡Error! rectifique los datos ingresados", {
+      //   style: {
+      //     border: "1px solid #713200",
+      //     padding: "16px",
+      //     color: "#713200",
+      //   },
+      //   iconTheme: {
+      //     primary: "#713200",
+      //     secondary: "#FFFAEE",
+      //   },
+      // });
+    }
   };
 
   return (
@@ -191,7 +216,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
         <div
           id="crud-modal"
           tabIndex={-1}
-          aria-hidden="true"
           className="w-full h-full fixed top-0 left-0 flex z-50 justify-center items-center"
           onClick={() => setIsOpen(false)}
         >
@@ -207,7 +231,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                 <button
                   type="button"
                   className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg 
-                  text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  text-sm w-8 h-8 ms-auto inline-flex cursor-pointer justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   <CloseModal />
@@ -215,7 +239,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                 </button>
               </div>
 
-              <form className="p-4 md:p-5" onSubmit={handleSubmit}>
+              <div className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
                     <label
@@ -283,7 +307,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                         placeholder="+57"
                       />
                       <input
-                        type="tel"
+                        type="number"
                         id="contact-phone"
                         className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
                         placeholder="Ingresa tu número de contacto"
@@ -317,10 +341,12 @@ export const ContactMeModal = ({ setIsOpen }) => {
                   className="text-white inline-flex items-center 
                     bg-[rgb(42,75,155)] hover:scale-110 outline-none  
                     font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 
-                    text-center cursor-pointer">
+                    text-center cursor-pointer"
+                  onClick={handleClick}
+                >
                   Enviar
                 </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>
