@@ -2,15 +2,14 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseModal } from "../../assets/icons/CloseModal";
 import { saveData } from "../../server/service/CustomerService";
+import CenteredToast from "./CenteredToast";
 
+// Utils banderas
 const toFlagEmoji = (iso2) =>
-  iso2
-    .toUpperCase()
-    .replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+  iso2.toUpperCase().replace(/./g, (c) => String.fromCodePoint(127397 + c.charCodeAt(0)));
+const getFlagUrl = (iso2) => `https://flagcdn.com/24x18/${iso2.toLowerCase()}.png`;
 
-const getFlagUrl = (iso2) =>
-  `https://flagcdn.com/24x18/${iso2.toLowerCase()}.png`;
-
+// Países
 const COUNTRIES = [
   { id: 1, name: "Afganistán", dial: "+93", iso2: "AF" },
   { id: 2, name: "Albania", dial: "+355", iso2: "AL" },
@@ -73,55 +72,31 @@ const COUNTRIES = [
   { id: 59, name: "Sudáfrica", dial: "+27", iso2: "ZA" },
 ];
 
-export default function CountryDropdown({
-  value,
-  onChange,
-  countries,
-  defaultCountry = "CO",
-}) {
+// Dropdown de países (robusto: value string u objeto; empuja default si falta)
+function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+
   const selected = useMemo(() => {
     if (!countries?.length) return null;
-
     if (typeof value === "string") {
-      return (
-        countries.find((c) => c.iso2 === value) ||
-        countries.find((c) => c.iso2 === defaultCountry) ||
-        null
-      );
+      return countries.find((c) => c.iso2 === value) || countries.find((c) => c.iso2 === defaultCountry) || null;
     }
     if (value?.iso2) {
-      return (
-        countries.find((c) => c.iso2 === value.iso2) ||
-        countries.find((c) => c.iso2 === defaultCountry) ||
-        null
-      );
+      return countries.find((c) => c.iso2 === value.iso2) || countries.find((c) => c.iso2 === defaultCountry) || null;
     }
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
+  // Normaliza al montar
   useEffect(() => {
     const def = countries.find((c) => c.iso2 === defaultCountry) || null;
-    if (!value && def) {
-      onChange(def);
-      return;
-    }
-    if (typeof value === "string") {
-      const fixed = countries.find((c) => c.iso2 === value) || def;
-      if (fixed && fixed !== selected) onChange(fixed);
-      return;
-    }
-    if (value?.iso2) {
-      const fixed = countries.find((c) => c.iso2 === value.iso2) || def;
-      if (fixed && fixed !== value) onChange(fixed);
-    }
+    if (!value && def) onChange(def);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const onClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
-    };
+    const onClickOutside = (e) => ref.current && !ref.current.contains(e.target) && setOpen(false);
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
@@ -131,18 +106,17 @@ export default function CountryDropdown({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full bg-gray-600 text-white text-left p-2.5 rounded-lg border border-gray-300 focus:outline-none"
+        className="w-full bg-gray-600 text-white text-left p-2.5 rounded-lg border border-gray-300 focus:outline-none text-base md:text-sm"
       >
         {selected ? (
           <span className="flex items-center gap-2">
+            <span className="text-lg" aria-hidden="true">{toFlagEmoji(selected.iso2)}</span>
             <img
               src={getFlagUrl(selected.iso2)}
               alt={`Bandera de ${selected.name}`}
               className="inline-block h-4 w-6 rounded-sm object-cover"
               loading="lazy"
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
+              onError={(e) => (e.currentTarget.style.display = "none")}
             />
             <span>{selected.name}</span>
           </span>
@@ -150,37 +124,29 @@ export default function CountryDropdown({
           <span className="text-gray-300">Seleccione una opción</span>
         )}
       </button>
+
       {open && (
-        <ul role="listbox"
-          className="
-            absolute top-full mt-1 w-full z-50
-            max-h-56 overflow-y-auto
-            bg-gray-700 border border-gray-600 rounded-lg shadow-lg
-          "
+        <ul
+          role="listbox"
+          className="absolute top-full mt-1 w-full z-50 max-h-56 overflow-y-auto bg-gray-700 border border-gray-600 rounded-lg shadow-lg"
         >
           {countries.map((c) => (
             <li
-              key={c.id}
-              onClick={() => {
-                onChange(c);
-                setOpen(false);
-              }}
-              className={`
-                px-3 py-2 cursor-pointer flex items-center gap-2
-                text-white hover:bg-gray-600
-                ${selected?.iso2 === c.iso2 ? "bg-gray-600" : ""}
-              `}
               role="option"
               aria-selected={selected?.iso2 === c.iso2}
+              key={c.id}
+              onClick={() => { onChange(c); setOpen(false); }}
+              className={`px-3 py-2 cursor-pointer flex items-center gap-2 text-white hover:bg-gray-600 ${
+                selected?.iso2 === c.iso2 ? "bg-gray-600" : ""
+              }`}
             >
+              <span className="text-lg" aria-hidden="true">{toFlagEmoji(c.iso2)}</span>
               <img
                 src={getFlagUrl(c.iso2)}
                 alt={`Bandera de ${c.name}`}
                 className="inline-block h-4 w-6 rounded-sm object-cover"
                 loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
+                onError={(e) => (e.currentTarget.style.display = "none")}
               />
               <span>{c.name}</span>
             </li>
@@ -192,37 +158,62 @@ export default function CountryDropdown({
 }
 
 export const ContactMeModal = ({ setIsOpen }) => {
-  const [country, setCountry] = useState(() =>
-    COUNTRIES.find(c => c.iso2 === "CO")
-  );
+  // Estado
+  const [country, setCountry] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(""); // solo dígitos
   const [message, setMessage] = useState("");
+
   const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState(null);
-  const isValid = name.trim() && email.trim() && country?.name && phone.trim();
-  const handleClick = async () => {
-  const cleanedPhone = phone.replace(/\D/g, "");
-  const resetForm = () => {
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      const def = COUNTRIES.find(c => c.iso2 === "CO");
-      setCountry(def || null);
+  const [toast, setToast] = useState(null); // { type, text, sub }
+  const contentRef = useRef(null);
+  const firstFieldRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneRef = useRef(null);
+
+  // A11y/UX: foco inicial, cerrar con ESC, bloquear fondo
+  useEffect(() => {
+    firstFieldRef.current?.focus();
+    const onKey = (e) => e.key === "Escape" && setIsOpen(false);
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
     };
+  }, [setIsOpen]);
+
+  // Validaciones mínimas
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const phoneOk = /^\d{7,15}$/.test(phone);
+  const isValid = name.trim() && emailOk && country?.name && phoneOk;
+
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setMessage("");
+    const def = COUNTRIES.find((c) => c.iso2 === "CO");
+    setCountry(def || null);
+  };
+
+  const handleClick = async () => {
     if (!isValid || submitting) return;
-    setStatus(null);
+
     setSubmitting(true);
     const payload = {
-      customerName: name,
-      customerEmail: email,
+      customerName: name.trim(),
+      customerEmail: email.trim(),
       customerCountry: country.name,
-      customerPhone: `${country.dial} ${cleanedPhone}`,
+      customerPhone: `${country.dial} ${phone}`,
       message: message.trim(),
     };
+
+    // mínimo visible para que "Enviando..." se note
     const minVisible = new Promise((r) => setTimeout(r, 600));
+
     try {
       const [results] = await Promise.all([
         Promise.allSettled([
@@ -235,86 +226,88 @@ export const ContactMeModal = ({ setIsOpen }) => {
         ]),
         minVisible,
       ]);
+
       const allOk = results.every((r) => r.status === "fulfilled");
       if (allOk) {
-        setStatus("success");
         resetForm();
+        contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+        setToast({ type: "success", text: "¡Enviado con éxito!", sub: "Te contactaremos pronto." });
+        setTimeout(() => setToast(null), 1800);
+        // Si deseas cerrar automáticamente:
+        // setTimeout(() => setIsOpen(false), 1900);
       } else {
-        setStatus("error");
+        setToast({ type: "error", text: "No pudimos enviar", sub: "Inténtalo nuevamente." });
+        setTimeout(() => setToast(null), 2000);
       }
-    } catch (e) {
-      console.error("Error al enviar:", e);
-      setStatus("error");
+    } catch (err) {
+      console.error("Error al enviar:", err);
+      setToast({ type: "error", text: "Ocurrió un error inesperado", sub: "Vuelve a intentarlo." });
+      setTimeout(() => setToast(null), 2000);
     } finally {
       setSubmitting(false);
     }
   };
-
-  const firstFieldRef = useRef(null);
-  const contentRef = useRef(null);
-
-  useEffect(() => {
-    firstFieldRef.current?.focus();
-    const onKey = (e) => e.key === "Escape" && setIsOpen(false);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [setIsOpen]);
-
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
-  }, []);
 
   return (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0, zIndex: 50 }}
         animate={{ opacity: 1, zIndex: 50 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.25 }}
         exit={{ opacity: 0 }}
       >
-      <div
-        id="crud-modal"
-        tabIndex={-1}
-        className="fixed inset-0 z-50 flex justify-center items-center overscroll-contain"
-        onClick={() => setIsOpen(false)}
-      >
+        <div
+          id="crud-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-title"
+          tabIndex={-1}
+          className="fixed inset-0 z-50 flex justify-center items-center overscroll-contain"
+          onClick={() => setIsOpen(false)}
+        >
           <div
-            className="relative p-4 w-full max-w-md max-h-full"
+            className="relative p-4 w-full max-w-md max-h-[100dvh]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative rounded-2xl shadow-sm bg-gray-800">
-              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
+              {/* Header sticky para que el caret no quede detrás */}
+              <div className="sticky top-0 z-20 flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600 bg-gray-800/95 backdrop-blur">
                 <h3 id="contact-title" className="text-lg font-semibold text-white">
                   Ingresa tus datos de contacto
                 </h3>
                 <button
                   type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg 
-                  text-sm w-8 h-8 ms-auto inline-flex cursor-pointer justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  aria-label="Cerrar"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg
+                  w-8 h-8 inline-flex cursor-pointer justify-center items-center md:hover:bg-gray-600 md:hover:text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   <CloseModal />
-                  <span className="sr-only">Cerrar modal</span>
                 </button>
               </div>
 
-              <div ref={contentRef} className="p-4 md:p-5 max-h-[calc(100dvh-10rem)] overflow-y-auto overscroll-contain">
+              {/* Toast centrado sobre el panel */}
+              <CenteredToast toast={toast} />
+
+              {/* Contenido scrolleable */}
+              <div
+                ref={contentRef}
+                className="p-4 md:p-5 max-h-[calc(100dvh-10rem)] overflow-y-auto overscroll-contain"
+              >
                 <div className="grid gap-4 mb-4 grid-cols-2">
+                  {/* Nombre */}
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-name"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-name" className="block mb-2 text-left text-sm font-medium text-white">
                       Nombre (*):
                     </label>
                     <input
-                      autoComplete="name"
                       ref={firstFieldRef}
                       type="text"
                       id="contact-name"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base md:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      autoComplete="name"
+                      enterKeyHint="next"
+                      onKeyDown={(e) => e.key === "Enter" && emailRef.current?.focus()}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-base md:text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white scroll-mt-24"
                       placeholder="Ingresa tu nombre"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -322,120 +315,97 @@ export const ContactMeModal = ({ setIsOpen }) => {
                     />
                   </div>
 
+                  {/* Email */}
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-email"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-email" className="block mb-2 text-left text-sm font-medium text-white">
                       Correo electrónico (*):
                     </label>
                     <input
-                      autoComplete="email"
+                      ref={emailRef}
                       type="email"
                       id="contact-email"
-                      className="bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg block w-full p-2.5"
+                      autoComplete="email"
+                      enterKeyHint="next"
+                      onKeyDown={(e) => e.key === "Enter" && phoneRef.current?.focus()}
+                      className="bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg block w-full p-2.5 scroll-mt-24"
                       placeholder="Ingresa tu correo electrónico"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
-                    {email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
-                      <p className="text-xs text-red-400 mt-1">
-                        Formato de correo no válido
-                      </p>
+                    {email && !emailOk && (
+                      <p className="text-xs text-red-400 mt-1">Formato de correo no válido.</p>
                     )}
                   </div>
 
+                  {/* País */}
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-country"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-country" className="block mb-2 text-left text-sm font-medium text-white">
                       País (*):
                     </label>
                     <CountryDropdown
                       value={country}
-                      onChange={(c) => setCountry(c)}
+                      onChange={setCountry}
                       countries={COUNTRIES}
                       defaultCountry="CO"
                     />
                   </div>
 
+                  {/* Teléfono: input group (prefijo + número) */}
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-phone"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-phone" className="block mb-2 text-left text-sm font-medium text-white">
                       Número de contacto (*):
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex rounded-lg overflow-hidden border border-gray-300">
+                      <span className="bg-gray-700 text-white px-3 py-2 text-base md:text-sm flex items-center">
+                        {country?.dial || "+57"}
+                      </span>
                       <input
-                        type="text"
-                        readOnly
-                        className="w-20 flex-shrink-0 bg-gray-700 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5 text-center"
-                        value={country ? country.dial : ""}
-                        placeholder="+57"
-                      />
-                      <input
+                        ref={phoneRef}
                         type="tel"
                         id="contact-phone"
-                        className="flex-1 min-w-0 bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5"
+                        className="flex-1 min-w-0 bg-gray-600 text-white text-base md:text-sm p-2.5 scroll-mt-24"
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                         inputMode="numeric"
                         pattern="\d*"
+                        autoComplete="tel"
                         required
                       />
                     </div>
-                    {phone && !/^\d{7,15}$/.test(phone.replace(/\D/g, "")) && (
-                      <p className="text-xs text-red-400 mt-1">
-                        El número debe tener entre 7 y 15 dígitos
-                      </p>
+                    {phone && !phoneOk && (
+                      <p className="text-xs text-red-400 mt-1">El número debe tener entre 7 y 15 dígitos.</p>
                     )}
                   </div>
 
+                  {/* Mensaje */}
                   <div className="col-span-2">
-                    <label
-                      htmlFor="contact-message"
-                      className="block mb-2 text-left text-sm font-medium text-white"
-                    >
+                    <label htmlFor="contact-message" className="block mb-2 text-left text-sm font-medium text-white">
                       Déjanos un mensaje:
                     </label>
                     <textarea
                       id="contact-message"
                       rows={4}
-                      className="block p-2.5 w-full text-base md:text-sm text-white bg-gray-600 rounded-lg border border-gray-300"
+                      className="block p-2.5 w-full text-white bg-gray-600 rounded-lg border border-gray-300 text-base md:text-sm scroll-mt-24"
                       placeholder="Escribe un mensaje"
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                     />
                   </div>
                 </div>
+
+                {/* Botón */}
                 <button
                   type="button"
-                  disabled={submitting}
-                  className={`text-white inline-flex items-center 
-                            ${!isValid || submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] md:hover:scale-110"}
-                            outline-none font-medium rounded-lg transition-transform duration-300 text-base md:text-sm px-5 py-2.5 text-center`}
+                  disabled={!isValid || submitting}
+                  className={`text-white inline-flex items-center
+                    ${!isValid || submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] md:hover:scale-110"}
+                    outline-none font-medium rounded-lg transition-transform duration-300 text-base md:text-sm px-5 py-2.5 text-center`}
                   onClick={handleClick}
                 >
                   {submitting ? "Enviando..." : "Enviar"}
                 </button>
-                {status === "success" && (
-                  <div className="sticky top-0 z-10 mb-3">
-                    <p className="bg-green-900/40 border border-green-500 text-green-300 rounded-md px-3 py-2 text-sm">
-                      ¡Enviado con éxito! Te contactaremos pronto.
-                    </p>
-                  </div>
-                )}
-                {status === "error" && (
-                  <div className="sticky top-0 z-10 mb-3">
-                    <p className="bg-red-900/40 border border-red-500 text-red-300 rounded-md px-3 py-2 text-sm">
-                      No pudimos enviar. Intenta nuevamente.
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           </div>
