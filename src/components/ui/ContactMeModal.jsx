@@ -81,8 +81,6 @@ export default function CountryDropdown({
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-
-  // 1) Selección robusta (string u objeto) y retorno SIEMPRE canónico desde `countries`
   const selected = useMemo(() => {
     if (!countries?.length) return null;
 
@@ -103,30 +101,22 @@ export default function CountryDropdown({
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
-  // 2) Normaliza el valor del padre "desde abajo" (una sola vez al montar)
   useEffect(() => {
     const def = countries.find((c) => c.iso2 === defaultCountry) || null;
-
-    // Si el padre no trae value, forzamos el default
     if (!value && def) {
       onChange(def);
       return;
     }
-
-    // Si trae string, lo convertimos en el objeto canónico
     if (typeof value === "string") {
       const fixed = countries.find((c) => c.iso2 === value) || def;
       if (fixed && fixed !== selected) onChange(fixed);
       return;
     }
-
-    // Si trae objeto pero no es el canónico, lo reemplazamos por el canónico
     if (value?.iso2) {
       const fixed = countries.find((c) => c.iso2 === value.iso2) || def;
       if (fixed && fixed !== value) onChange(fixed);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // importante: solo al montar para evitar bucles
+  }, []);
 
   useEffect(() => {
     const onClickOutside = (e) => {
@@ -138,7 +128,6 @@ export default function CountryDropdown({
 
   return (
     <div ref={ref} className="relative w-full">
-      {/* Botón */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -161,8 +150,6 @@ export default function CountryDropdown({
           <span className="text-gray-300">Seleccione una opción</span>
         )}
       </button>
-
-      {/* Lista */}
       {open && (
         <ul
           className="
@@ -175,7 +162,7 @@ export default function CountryDropdown({
             <li
               key={c.id}
               onClick={() => {
-                onChange(c); // enviamos SIEMPRE el objeto de `countries`
+                onChange(c);
                 setOpen(false);
               }}
               className={`
@@ -323,8 +310,8 @@ const [country, setCountry] = useState(() =>
                       País (*):
                     </label>
                     <CountryDropdown
-                      value= {country}               // puede venir null/string/objeto
-                      onChange={(c) => setCountry(c)} // guardamos SIEMPRE el objeto canónico
+                      value= {country}
+                      onChange={(c) => setCountry(c)}
                       countries={COUNTRIES}
                       defaultCountry="CO"
                     />
