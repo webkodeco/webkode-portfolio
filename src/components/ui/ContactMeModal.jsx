@@ -2,6 +2,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseModal } from "../../assets/icons/CloseModal";
 import { saveData } from "../../server/service/CustomerService";
+import { validateEmail} from "../../server/service/ValidateService";
 
 const toFlagEmoji = (iso2) =>
   iso2
@@ -317,7 +318,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
-                    {email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+                    {email && validateEmail && (
                       <p className="text-xs text-red-400 mt-1">
                         Formato de correo no válido
                       </p>
@@ -361,7 +362,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
                         onChange={(e) => {
-                          const onlyNums = e.target.value.replace(/\D/g, ""); // elimina todo lo que no sea número
+                          const onlyNums = e.target.value.replace(/\D/g, "");
                           setPhone(onlyNums);
                         }}
                         inputMode="numeric"
@@ -369,7 +370,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                         required
                       />
                     </div>
-                    {phone && !/^\d{7,15}$/.test(phone.replace(/\D/g, "")) && (
+                    {phone && (
                       <p className="text-xs text-red-400 mt-1">
                         El número debe tener entre 7 y 15 dígitos
                       </p>
@@ -393,7 +394,6 @@ export const ContactMeModal = ({ setIsOpen }) => {
                     />
                   </div>
                 </div>
-
                 <button
                   type="button"
                   disabled={!isValid || submitting}
