@@ -136,7 +136,6 @@ function CountryDropdown({ value, onChange, countries, defaultCountry = "CO" }) 
                 selected?.iso2 === c.iso2 ? "bg-gray-600" : ""
               }`}
             >
-              <span className="text-lg" aria-hidden="true">{toFlagEmoji(c.iso2)}</span>
               <img
                 src={getFlagUrl(c.iso2)}
                 alt={`Bandera de ${c.name}`}
