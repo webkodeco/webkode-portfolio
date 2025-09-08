@@ -277,6 +277,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
               <div
                 ref={contentRef}
                 className="p-4 md:p-5 max-h-[calc(100dvh-10rem)] overflow-y-auto overscroll-contain"
+                style={{ WebkitOverflowScrolling: "touch" }}
               >
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
