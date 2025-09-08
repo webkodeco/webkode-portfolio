@@ -4,11 +4,8 @@ import react from "@astrojs/react";
 import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
-  output: "server", 
-  adapter: cloudflare({
-    // Opcional: funciones de Workers
-    // assets: './dist',  // si quieres servir assets estáticos
-  }),
+  output: "server",
+  adapter: cloudflare({}),
   vite: {
     plugins: [tailwindcss()],
   },

@@ -10,9 +10,7 @@ export const POST = async ({ request }) => {
       message,
     } = await request.json();
 
-    const apiKey = `${import.meta.env.RESEND_API_KEY}`;
-
-    console.log("API Key:", apiKey); // Verifica que la clave se está leyendo correctamente
+    const apiKey = "re_QMXGZPi5_MkaJzcFbn4TnBX6zWfPL4Z5F"; // Verifica que la clave se está leyendo correctamente
     // Enviar correo usando fetch directo a la API de Resend
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
