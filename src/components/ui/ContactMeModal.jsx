@@ -381,7 +381,7 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       <input
                         type="tel"
                         id="contact-phone"
-                        className="flex-1 bg-gray-600 border border-gray-300 text-white text-base md:text-sm rounded-lg p-2.5"
+                        className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
                         onChange={(e) => {
