@@ -2,7 +2,6 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CloseModal } from "../../assets/icons/CloseModal";
 import { saveData } from "../../server/service/CustomerService";
-import toast from "react-hot-toast";
 
 const toFlagEmoji = (iso2) =>
   iso2
