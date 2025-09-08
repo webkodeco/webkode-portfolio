@@ -82,6 +82,7 @@ export default function CountryDropdown({
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
+  // 1) Selección robusta (string u objeto) y retorno SIEMPRE canónico desde `countries`
   const selected = useMemo(() => {
     if (!countries?.length) return null;
 
@@ -92,23 +93,40 @@ export default function CountryDropdown({
         null
       );
     }
-
     if (value?.iso2) {
       return (
         countries.find((c) => c.iso2 === value.iso2) ||
-        value ||
+        countries.find((c) => c.iso2 === defaultCountry) ||
         null
       );
     }
-
     return countries.find((c) => c.iso2 === defaultCountry) || null;
   }, [countries, value, defaultCountry]);
 
+  // 2) Normaliza el valor del padre "desde abajo" (una sola vez al montar)
   useEffect(() => {
-    if (!value && selected) {
-      onChange(selected);
+    const def = countries.find((c) => c.iso2 === defaultCountry) || null;
+
+    // Si el padre no trae value, forzamos el default
+    if (!value && def) {
+      onChange(def);
+      return;
     }
-  }, [value, selected, onChange]);
+
+    // Si trae string, lo convertimos en el objeto canónico
+    if (typeof value === "string") {
+      const fixed = countries.find((c) => c.iso2 === value) || def;
+      if (fixed && fixed !== selected) onChange(fixed);
+      return;
+    }
+
+    // Si trae objeto pero no es el canónico, lo reemplazamos por el canónico
+    if (value?.iso2) {
+      const fixed = countries.find((c) => c.iso2 === value.iso2) || def;
+      if (fixed && fixed !== value) onChange(fixed);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // importante: solo al montar para evitar bucles
 
   useEffect(() => {
     const onClickOutside = (e) => {
@@ -144,7 +162,7 @@ export default function CountryDropdown({
         )}
       </button>
 
-      {/* Lista (siempre hacia abajo) */}
+      {/* Lista */}
       {open && (
         <ul
           className="
@@ -157,7 +175,7 @@ export default function CountryDropdown({
             <li
               key={c.id}
               onClick={() => {
-                onChange(c); // devuelvo el objeto completo
+                onChange(c); // enviamos SIEMPRE el objeto de `countries`
                 setOpen(false);
               }}
               className={`
@@ -186,31 +204,32 @@ export default function CountryDropdown({
 }
 
 export const ContactMeModal = ({ setIsOpen }) => {
-  // Asegura que el estado SIEMPRE sea un objeto de país
-  const [country, setCountry] = useState(() =>
-    COUNTRIES.find((c) => c.iso2 === "CO")
-  );
+  // 3) El padre arranca en null para que el dropdown empuje el default
+  const [country, setCountry] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
+  const isValid =
+    name.trim() && email.trim() && country?.name && phone.trim();
+
   const handleClick = async () => {
-    if (country != null && country.name != null) {
-      const result = await saveData(name, email, country.name, phone, message);
-      if (result) {
-        await fetch("/api/MailService", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customerName: name,
-            customerEmail: email,
-            customerCountry: country.name,
-            customerPhone: phone,
-            message: message,
-          }),
-        });
-      }
+    if (!isValid) return;
+
+    const result = await saveData(name, email, country.name, phone, message);
+    if (result) {
+      await fetch("/api/MailService", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: name,
+          customerEmail: email,
+          customerCountry: country.name,
+          customerPhone: phone,
+          message: message,
+        }),
+      });
     }
   };
 
@@ -294,8 +313,8 @@ export const ContactMeModal = ({ setIsOpen }) => {
                       País (*):
                     </label>
                     <CountryDropdown
-                      value={country}                 // puede ser objeto o string, el dropdown lo soporta
-                      onChange={(c) => setCountry(c)} // guardamos SIEMPRE objeto
+                      value={country}                 // puede venir null/string/objeto
+                      onChange={(c) => setCountry(c)} // guardamos SIEMPRE el objeto canónico
                       countries={COUNTRIES}
                       defaultCountry="CO"
                     />
@@ -348,11 +367,12 @@ export const ContactMeModal = ({ setIsOpen }) => {
 
                 <button
                   type="submit"
-                  className="text-white inline-flex items-center 
-                    bg-[rgb(42,75,155)] hover:scale-110 outline-none  
-                    font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 
-                    text-center cursor-pointer"
+                  disabled={!isValid}
+                  className={`text-white inline-flex items-center 
+                    ${isValid ? "bg-[rgb(42,75,155)] hover:scale-110 cursor-pointer" : "bg-gray-500 cursor-not-allowed"}
+                    outline-none font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 text-center`}
                   onClick={handleClick}
+                  aria-disabled={!isValid}
                 >
                   Enviar
                 </button>
