@@ -151,7 +151,7 @@ export default function CountryDropdown({
         )}
       </button>
       {open && (
-        <ul
+        <ul role="listbox"
           className="
             absolute top-full mt-1 w-full z-50
             max-h-56 overflow-y-auto
@@ -170,6 +170,7 @@ export default function CountryDropdown({
                 text-white hover:bg-gray-600
                 ${selected?.iso2 === c.iso2 ? "bg-gray-600" : ""}
               `}
+              role="option"
               aria-selected={selected?.iso2 === c.iso2}
             >
               <img
@@ -191,27 +192,24 @@ export default function CountryDropdown({
 }
 
 export const ContactMeModal = ({ setIsOpen }) => {
-const [country, setCountry] = useState(() =>
-  COUNTRIES.find(c => c.iso2 === "CO")
-);
+  const [country, setCountry] = useState(() =>
+    COUNTRIES.find(c => c.iso2 === "CO")
+  );
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
-
-  const isValid =
-    name.trim() && email.trim() && country?.name && phone.trim();
-
+  const [submitting, setSubmitting] = useState(false);
+  const isValid = name.trim() && email.trim() && country?.name && phone.trim();
+  const cleanedPhone = phone.replace(/\D/g, "");
   const handleClick = async () => {
-    if (!country?.name) {
-      console.warn("Country vacío: no se envía.");
-      return;
-    }
+    if (!isValid || submitting) return;
+    setSubmitting(true);
     const payload = {
       customerName: name,
       customerEmail: email,
       customerCountry: country.name,
-      customerPhone: phone,
+      customerPhone: `${country.dial} ${cleanedPhone}`,
       message,
     };
     try {
@@ -227,8 +225,24 @@ const [country, setCountry] = useState(() =>
       console.log("MailService =>", mailRes);
     } catch (err) {
       console.error("Error al enviar:", err);
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  const firstFieldRef = useRef(null);
+
+  useEffect(() => {
+    firstFieldRef.current?.focus();
+    const onKey = (e) => e.key === "Escape" && setIsOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [setIsOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
 
   return (
     <AnimatePresence>
@@ -250,7 +264,7 @@ const [country, setCountry] = useState(() =>
           >
             <div className="relative rounded-2xl shadow-sm bg-gray-800">
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600">
-                <h3 className="text-lg font-semibold text-white">
+                <h3 id="contact-title" className="text-lg font-semibold text-white">
                   Ingresa tus datos de contacto
                 </h3>
                 <button
@@ -274,6 +288,8 @@ const [country, setCountry] = useState(() =>
                       Nombre (*):
                     </label>
                     <input
+                      autoComplete="name"
+                      ref={firstFieldRef}
                       type="text"
                       id="contact-name"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -292,6 +308,7 @@ const [country, setCountry] = useState(() =>
                       Correo electrónico (*):
                     </label>
                     <input
+                      autoComplete="email"
                       type="email"
                       id="contact-email"
                       className="bg-gray-600 border border-gray-300 text-white text-sm rounded-lg block w-full p-2.5"
@@ -300,6 +317,11 @@ const [country, setCountry] = useState(() =>
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
+                    {email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+                      <p className="text-xs text-red-400 mt-1">
+                        Formato de correo no válido
+                      </p>
+                    )}
                   </div>
 
                   <div className="col-span-2">
@@ -310,7 +332,7 @@ const [country, setCountry] = useState(() =>
                       País (*):
                     </label>
                     <CountryDropdown
-                      value= {country}
+                      value={country}
                       onChange={(c) => setCountry(c)}
                       countries={COUNTRIES}
                       defaultCountry="CO"
@@ -338,10 +360,20 @@ const [country, setCountry] = useState(() =>
                         className="flex-1 bg-gray-600 border border-gray-300 text-white text-sm rounded-lg p-2.5"
                         placeholder="Ingresa tu número de contacto"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => {
+                          const onlyNums = e.target.value.replace(/\D/g, ""); // elimina todo lo que no sea número
+                          setPhone(onlyNums);
+                        }}
+                        inputMode="numeric"
+                        pattern="\d*"
                         required
                       />
                     </div>
+                    {phone && !/^\d{7,15}$/.test(phone.replace(/\D/g, "")) && (
+                      <p className="text-xs text-red-400 mt-1">
+                        El número debe tener entre 7 y 15 dígitos
+                      </p>
+                    )}
                   </div>
 
                   <div className="col-span-2">
@@ -364,14 +396,14 @@ const [country, setCountry] = useState(() =>
 
                 <button
                   type="button"
-                   className="text-white inline-flex items-center 
-                     bg-[rgb(42,75,155)] hover:scale-110 outline-none  
-                     font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 
-                     text-center cursor-pointer"
-                   onClick={handleClick}
-                 >
-                   Enviar
-                 </button>
+                  disabled={!isValid || submitting}
+                  className={`text-white inline-flex items-center 
+    ${!isValid || submitting ? "bg-gray-500 cursor-not-allowed" : "bg-[rgb(42,75,155)] hover:scale-110"}
+    outline-none font-medium rounded-lg transition-transform duration-300 text-sm px-5 py-2.5 text-center`}
+                  onClick={handleClick}
+                >
+                  {submitting ? "Enviando..." : "Enviar"}
+                </button>
               </div>
             </div>
           </div>
