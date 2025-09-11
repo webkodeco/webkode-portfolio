@@ -31,7 +31,6 @@ const uri = "https://webkode.co/";
       name="description"
       content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."
     />
-
     <meta
       property="og:title"
       content="Webkode | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas."
@@ -40,9 +39,42 @@ const uri = "https://webkode.co/";
       property="og:description"
       content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."
     />
-    <meta property="og:image" content="/webkodeicon.svg" />
-    <meta property="og:url" content={uri} />
+    <meta
+      property="og:image"
+      content="https://webkode.co/WEBKODE-SOLO-BLANCO.webp"
+    />
+    <meta property="og:url" content="https://webkode.co" />
     <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Webkode | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas."
+    />
+    <meta
+      name="twitter:description"
+      content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."
+    />
+    <meta
+      name="twitter:image"
+      content="https://webkode.co/WEBKODEBLANCO.webp"
+    />
+    <meta name="twitter:url" content="https://webkode.co" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "WebKode",
+        "url": "https://webkode.co",
+        "logo": "https://webkode.co/WEBKODE-SOLO-BLANCO.webp",
+        "description": "Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis.",
+        "sameAs": [
+          "https://www.instagram.com/webkodeco/",
+          "https://www.linkedin.com/in/web-kode-043755380/"
+        ]
+      }
+    </script>
 
     <link rel="canonical" href={uri} />
   </head>
