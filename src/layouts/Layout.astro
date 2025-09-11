@@ -14,20 +14,39 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+
+const uri = "https://webkode.co/";
 ---
 
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/webkodeicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>WebKode | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas.</title>
-    <meta name="description" content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis." />
-    <link rel="canonical" href="https://webkode.co/" />
+    <title>
+      {title} | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas.
+    </title>
+    <meta
+      name="description"
+      content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."
+    />
+
+    <meta
+      property="og:title"
+      content="Webkode | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas."
+    />
+    <meta
+      property="og:description"
+      content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."
+    />
+    <meta property="og:image" content="/webkodeicon.svg" />
+    <meta property="og:url" content={uri} />
+
+    <link rel="canonical" href={uri} />
   </head>
   <body class="bg-black">
-    <main aria-label="Main content">
+    <main aria-label="main content">
       <slot />
     </main>
     <style is:global>
