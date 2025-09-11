@@ -4,17 +4,22 @@ export const ScrollUpButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("scroll", toggleVisible);
-  }, []);
+    const toggleVisible = () => {
+      const scrolled = document.documentElement.scrollTop;
+      if (scrolled > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
 
-  const toggleVisible = () => {
-    const scrolled = document.documentElement.scrollTop;
-    if (scrolled > 300) {
-      setIsVisible(true);
-    } else if (scrolled <= 300) {
-      setIsVisible(false);
-    }
-  };
+    window.addEventListener("scroll", toggleVisible);
+
+    // ✅ Cleanup: elimina el listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener("scroll", toggleVisible);
+    };
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -27,7 +32,7 @@ export const ScrollUpButton = () => {
     <>
       {isVisible && (
         <button
-          className="w-12 h-12 fixed bottom-6 right-6 main-border-gray rounded-xl
+          className="w-12 h-12 fixed bottom-6 right-6 rounded-xl
           bg-gray-800 hover:bg-gray-700 cursor-pointer flex justify-center items-center transition z-50"
           onClick={scrollToTop}
           aria-label="Scroll to top"
@@ -35,8 +40,8 @@ export const ScrollUpButton = () => {
           <svg
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            width="35px"
-            height="35px"
+            width="35"
+            height="35"
             viewBox="0 0 20 20"
           >
             <path
@@ -45,7 +50,7 @@ export const ScrollUpButton = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            ></path>
+            />
           </svg>
         </button>
       )}

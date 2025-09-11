@@ -5,21 +5,21 @@ const testimonialsData = [
     customerName: "John Watkins",
     customerTitle: "Founder of Dashflow",
     content:
-      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. Tailcast has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
+      "Antes de trabajar con Webkode teníamos toda la información de nuestro inventario en hojas de cálculo desordenadas. El software que nos desarrollaron nos permitió unificar procesos y tener reportes en tiempo real. Ahora tomamos decisiones más rápidas y hemos reducido un 40% los errores en pedidos. Sin duda, Kodificaron nuestras ideas y las hicieron crecer.",
     image: "",
   },
   {
     customerName: "John Watkins",
     customerTitle: "Founder of Dashflow",
     content:
-      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. Tailcast has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
+      "El crecimiento de nuestra empresa estaba limitado porque no teníamos control en tiempo real sobre la flota de vehículos. Webkode desarrolló una plataforma a la medida que nos permite monitorear rutas, tiempos de entrega y costos. Gracias a esto hemos optimizado nuestros recursos y aumentado la satisfacción de nuestros clientes. Definitivamente potenciaron nuestro negocio al unificar procesos clave.",
     image: "",
   },
   {
     customerName: "John Watkins",
     customerTitle: "Founder of Dashflow",
     content:
-      "The powerful analytic tools have helped us streamline our processes and make data-driven decisions that positively impact our efficiency. Tailcast has been a game-changer for our business. The platform is easy to use, and the insights we've gained have driven significant improvements.",
+      "Nuestra clínica necesitaba un sistema que centralizara las historias médicas y optimizara la gestión de citas. Con la solución de Webkode logramos que los pacientes agenden en línea y que los médicos accedan a la información de manera segura. Esto no solo mejoró la productividad del personal, sino también la experiencia de nuestros pacientes. Webkode nos ayudó a avanzar en la transformación digital que tanto necesitábamos.",
     image: "",
   },
 ];
