@@ -18,11 +18,11 @@ const { title } = Astro.props;
 const uri = "https://webkode.co/";
 ---
 
-<html lang="es">
+<html lang="es" class="scroll-smooth">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/webkodeicon.svg" />
-    <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>
       {title} | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas.
@@ -41,25 +41,20 @@ const uri = "https://webkode.co/";
     />
     <meta
       property="og:image"
-      content="https://webkode.co/WEBKODE-SOLO-BLANCO.webp"
+      content="/WEBKODE-SOLO-BLANCO.webp"
     />
-    <meta property="og:url" content="https://webkode.co" />
+    <meta property="og:url" content={uri} />
     <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Webkode | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas."
-    />
-    <meta
-      name="twitter:description"
-      content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."
-    />
-    <meta
-      name="twitter:image"
-      content="https://webkode.co/WEBKODEBLANCO.webp"
-    />
-    <meta name="twitter:url" content="https://webkode.co" />
+        <meta property="og:description" content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."/>
+    <meta property="og:image" content="/images/hero.webp" />
+    <meta property="og:url" content={uri} />
+    <meta property="og:site_name" content={title} />
+    
+    <meta name="twitter:card" content="photo" />
+    <meta name="twitter:title" content="Webkode | Desarrollamos el crecimiento de tu empresa Kodificando tus ideas."/>
+    <meta name="twitter:description" content="Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis."/>
+    <meta name="twitter:image" content="/WEBKODEBLANCO.webp"/>
+    <meta name="twitter:url" content={uri} />
 
     <script type="application/ld+json">
       {
@@ -67,6 +62,7 @@ const uri = "https://webkode.co/";
         "@type": "Organization",
         "name": "WebKode",
         "url": "https://webkode.co",
+        "image": "https://webkode.co/WEBKODEBLANCO.webp",
         "logo": "https://webkode.co/WEBKODE-SOLO-BLANCO.webp",
         "description": "Creamos páginas web, apps y optimizaciones para hacer crecer tu negocio. Contáctanos y solicita una demo gratis.",
         "sameAs": [
