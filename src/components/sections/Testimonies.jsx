@@ -5,7 +5,7 @@ const testimonialsData = [
     customerName: "Andres Ceballos",
     customerTitle: "CEO de NovaHaus",
     content:
-      "El equipo de NovaHaus hizo un trabajo excepcional en la creación de nuestro portal web. Supieron captar nuestras ideas, aportaron soluciones creativas y lograron un resultado que superó nuestras expectativas. Destaco su profesionalismo, compromiso y la calidad humana con la que nos acompañaron en todo el proceso.",
+      "El equipo de Webkode hizo un trabajo excepcional en la creación de nuestro portal web. Supieron captar nuestras ideas, aportaron soluciones creativas y lograron un resultado que superó nuestras expectativas. Destaco su profesionalismo, compromiso y la calidad humana con la que nos acompañaron en todo el proceso.",
     image: "Andres-ceballos.webp",
   },
   {
