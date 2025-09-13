@@ -2,25 +2,25 @@ import { motion } from "framer-motion";
 
 const testimonialsData = [
   {
-    customerName: "John Watkins",
-    customerTitle: "Founder of Dashflow",
+    customerName: "Andres Ceballos",
+    customerTitle: "CEO de NovaHaus",
     content:
-      "Antes de trabajar con Webkode teníamos toda la información de nuestro inventario en hojas de cálculo desordenadas. El software que nos desarrollaron nos permitió unificar procesos y tener reportes en tiempo real. Ahora tomamos decisiones más rápidas y hemos reducido un 40% los errores en pedidos. Sin duda, Kodificaron nuestras ideas y las hicieron crecer.",
-    image: "",
+      "El equipo de NovaHaus hizo un trabajo excepcional en la creación de nuestro portal web. Supieron captar nuestras ideas, aportaron soluciones creativas y lograron un resultado que superó nuestras expectativas. Destaco su profesionalismo, compromiso y la calidad humana con la que nos acompañaron en todo el proceso.",
+    image: "Andres-ceballos.webp",
   },
   {
-    customerName: "John Watkins",
-    customerTitle: "Founder of Dashflow",
+    customerName: "Nataly Palacios",
+    customerTitle: "CEO de Creación Mental",
     content:
-      "El crecimiento de nuestra empresa estaba limitado porque no teníamos control en tiempo real sobre la flota de vehículos. Webkode desarrolló una plataforma a la medida que nos permite monitorear rutas, tiempos de entrega y costos. Gracias a esto hemos optimizado nuestros recursos y aumentado la satisfacción de nuestros clientes. Definitivamente potenciaron nuestro negocio al unificar procesos clave.",
-    image: "",
+      "Trabajar con el equipo de Webkode fue una experiencia excepcional. Supieron entender desde el primer momento lo que necesitábamos y lograron crear un portal web moderno, funcional y totalmente adaptado a nuestra visión. El equipo demostró un profesionalismo admirable, siempre atentos a los detalles y con una disposición impecable. Estamos muy satisfechos con el resultado y sin duda volveríamos a contar con ellos.",
+    image: "Nataly.webp",
   },
   {
-    customerName: "John Watkins",
-    customerTitle: "Founder of Dashflow",
+    customerName: "Jose Sanchez",
+    customerTitle: "CEO de Sociedad Biomedica",
     content:
-      "Nuestra clínica necesitaba un sistema que centralizara las historias médicas y optimizara la gestión de citas. Con la solución de Webkode logramos que los pacientes agenden en línea y que los médicos accedan a la información de manera segura. Esto no solo mejoró la productividad del personal, sino también la experiencia de nuestros pacientes. Webkode nos ayudó a avanzar en la transformación digital que tanto necesitábamos.",
-    image: "",
+      "Trabajar con el equipo Webkode fue una experiencia excepcional. Desde el primer momento entendieron nuestras necesidades y lograron plasmar en el portal web exactamente lo que buscábamos. Su profesionalismo, dedicación y calidad en cada detalle marcaron la diferencia. Sin duda, un equipo altamente recomendado.",
+    image: "Jose-sanchez.webp",
   },
 ];
 
@@ -53,11 +53,12 @@ export const Testimonies = () => (
               <div className="flex mt-4 mb-2 xl:mt-8 xl:mb-4">
                 <div>
                   <img
-                    src={testimonial.image.src}
+                    src={testimonial.image}
                     alt="Customer avatar"
                     width="45px"
                     height="5px"
                     aria-label={testimonial.customerName}
+                    className="rounded-full object-cover"
                   />
                 </div>
                 <div className="flex flex-col ml-4">
