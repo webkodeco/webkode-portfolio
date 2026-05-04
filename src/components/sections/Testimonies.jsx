@@ -2,77 +2,128 @@ import { motion } from "framer-motion";
 
 const testimonialsData = [
   {
-    customerName: "Andres Ceballos",
+    customerName: "Andrés Ceballos",
     customerTitle: "CEO de NovaHaus",
+    projectType: "Portal web corporativo",
     content:
-      "El equipo de Webkode hizo un trabajo excepcional en la creación de nuestro portal web. Supieron captar nuestras ideas, aportaron soluciones creativas y lograron un resultado que superó nuestras expectativas. Destaco su profesionalismo, compromiso y la calidad humana con la que nos acompañaron en todo el proceso.",
+      "El equipo de WebKode hizo un trabajo excepcional en la creación de nuestro portal web. Supieron captar nuestras ideas, aportaron soluciones creativas y lograron un resultado que superó nuestras expectativas.",
     image: "Andres-ceballos.webp",
   },
   {
     customerName: "Nataly Palacios",
     customerTitle: "CEO de Creación Mental",
+    projectType: "Portal web moderno y funcional",
     content:
-      "Trabajar con el equipo de Webkode fue una experiencia excepcional. Supieron entender desde el primer momento lo que necesitábamos y lograron crear un portal web moderno, funcional y totalmente adaptado a nuestra visión. El equipo demostró un profesionalismo admirable, siempre atentos a los detalles y con una disposición impecable. Estamos muy satisfechos con el resultado y sin duda volveríamos a contar con ellos.",
+      "Trabajar con WebKode fue una experiencia excepcional. Entendieron desde el primer momento lo que necesitábamos y lograron crear un portal moderno, funcional y adaptado a nuestra visión.",
     image: "Nataly.webp",
   },
   {
-    customerName: "Jose Sanchez",
-    customerTitle: "CEO de Sociedad Biomedica",
+    customerName: "José Sánchez",
+    customerTitle: "CEO de Sociedad Biomédica",
+    projectType: "Sitio web empresarial",
     content:
-      "Trabajar con el equipo Webkode fue una experiencia excepcional. Desde el primer momento entendieron nuestras necesidades y lograron plasmar en el portal web exactamente lo que buscábamos. Su profesionalismo, dedicación y calidad en cada detalle marcaron la diferencia. Sin duda, un equipo altamente recomendado.",
+      "Desde el primer momento entendieron nuestras necesidades y lograron plasmar en el portal web exactamente lo que buscábamos. Su profesionalismo, dedicación y calidad en cada detalle marcaron la diferencia.",
     image: "Jose-sanchez.webp",
   },
 ];
 
-export const Testimonies = () => (
-  <section className="w-full flex justify-center pt-16 text-white mb-16 lg:mb-32 bg-black relative">
-    <div className="absolute -top-16" id="feedback" />
-    <div className="flex flex-col w-full lg:w-[1150px] justify-center">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.3 }}
-      >
-        <div className="block-subtitle text-center font-bold mb-6">
-          Testimonios
-        </div>
-        <div className="block-big-title text-center mb-20 px-8 sm:px-24 md:px-48">
-          ¡Clientes que les ha encantado{" "}
-          <label className="font-bold">Webkode</label>!
-        </div>
+const trustStats = [
+  { value: "+3", label: "años de experiencia técnica" },
+  { value: "100%", label: "proyectos desarrollados a medida" },
+  { value: "3", label: "ingenieros especializados" },
+];
 
-        <div className="flex flex-col text-white lg:flex-row gap-8 lg:gap-5 xl:gap-10 px-6 xl:px-0 items-center">
-          {testimonialsData.map((testimonial, index) => (
-            <div
-              className="w-11/12 sm:w-4/5 md:w-[560px] lg:w-1/3 main-border-gray-darker rounded-xl bg-[rgb(42,75,155)] flex flex-col px-6 py-4"
-              key={`${testimonial.customerName}-${index}`}
-            >
-              <div className="flex mb-2">{/* <QuoteIcon /> */}</div>
-              <div className="content-text-white">"{testimonial.content}"</div>
-              <div className="flex mt-4 mb-2 xl:mt-8 xl:mb-4">
-                <div>
-                  <img
-                    src={testimonial.image}
-                    alt="Customer avatar"
-                    width="45px"
-                    height="5px"
-                    aria-label={testimonial.customerName}
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col ml-4">
-                  <div className="content-text-white font-medium">
-                    {testimonial.customerName}
-                  </div>
-                  <div className="content-text-gray">
-                    {testimonial.customerTitle}
-                  </div>
-                </div>
+export const Testimonies = () => (
+  <section className="relative w-full overflow-hidden bg-gray-950 py-24 text-white">
+    <div className="absolute -top-20" id="feedback" />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(42,75,155,0.18),transparent_45%)]" />
+
+    <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-6 sm:px-8 lg:px-12">
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.55 }}
+        className="mx-auto max-w-3xl text-center"
+      >
+        <span className="inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-200">
+          Testimonios
+        </span>
+
+        <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          Empresas que confiaron en WebKode para mejorar su presencia digital
+        </h2>
+
+        <p className="mt-6 text-base leading-8 text-gray-400 sm:text-lg">
+          No solo desarrollamos sitios web. Acompañamos a nuestros clientes a
+          construir una presencia digital profesional, clara y enfocada en
+          generar confianza.
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.55, delay: 0.08 }}
+        className="mx-auto mt-12 grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3"
+      >
+        {trustStats.map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 text-center"
+          >
+            <p className="text-3xl font-extrabold text-white">{stat.value}</p>
+            <p className="mt-2 text-sm text-gray-400">{stat.label}</p>
+          </div>
+        ))}
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.55, delay: 0.12 }}
+        className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-3"
+      >
+        {testimonialsData.map((testimonial, index) => (
+          <article
+            className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-7 shadow-2xl shadow-black/20 transition-all duration-300 hover:-translate-y-2 hover:border-blue-400/40"
+            key={`${testimonial.customerName}-${index}`}
+          >
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-200">
+                {testimonial.projectType}
+              </span>
+
+              <span className="text-sm text-yellow-300">★★★★★</span>
+            </div>
+
+            <p className="flex-1 text-sm leading-7 text-gray-300">
+              “{testimonial.content}”
+            </p>
+
+            <div className="mt-8 flex items-center border-t border-white/10 pt-6">
+              <img
+                src={testimonial.image}
+                alt={testimonial.customerName}
+                width="52"
+                height="52"
+                aria-label={testimonial.customerName}
+                className="h-13 w-13 rounded-full object-cover ring-2 ring-blue-400/30"
+              />
+
+              <div className="ml-4">
+                <p className="font-bold text-white">
+                  {testimonial.customerName}
+                </p>
+                <p className="mt-1 text-sm text-gray-400">
+                  {testimonial.customerTitle}
+                </p>
               </div>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </motion.div>
     </div>
   </section>
