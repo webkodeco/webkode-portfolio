@@ -8,71 +8,64 @@ export const Hero = () => {
 
   return (
     <section
+      className="w-screen flex justify-center items-center bg-gray-900 mb-[28vw] md:mb-[18vw] lg:mb-[10vw] xl:mb-[13vw] 2xl:mb-60 hero-bg-gradient pb-24 sm:pb-32 md:pb-44 lg:pb-0"
       id="home"
-      className="relative w-screen overflow-hidden bg-gray-950 hero-bg-gradient"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(42,75,155,0.35),transparent_45%)]" />
-
-      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col items-center justify-center px-6 py-24 text-center sm:px-8 lg:px-12">
+      <div className="w-full md:w-[800px] xl:w-[900px] flex flex-col justify-center items-center pt-16 md:pt-16 lg:pt-20 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="mb-6 inline-flex rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-200">
-            Desarrollo web estratégico para empresas
-          </span>
+          <h3 className=" text-sm sm:text-2xl mb-6 sm:mt-32 mt-16  font-bold"></h3>
         </motion.div>
-
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.05 }}
-          className="max-w-5xl"
         >
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            Conseguimos más clientes para tu negocio con{" "}
-            <span className="text-[rgb(42,75,155)]">
-              páginas web que venden
-            </span>
+          <div className="text-5xl sm:text-6xl lg:text-7xl xl:text-7xl font-bold tracking-wide text-white px-8 sm:px-8 md:px-20 lg:px-4">
+            <h1 className="inline md:hidden text-[rgb(42,75,155)]">
+              {" "}
+              "Kodificamos tus ideas"
+            </h1>
+            <h1 className="hidden md:inline text-[rgb(42,75,155)]">
+              "Kodificamos tus ideas"
+            </h1>
+          </div>
+          <h1 className="mt-2 sm:mt-2 text-xl sm:text-3xl lg:text-4xl xl:text-4xl font-bold tracking-wide text-white px-8 sm:px-20 md:px-24 lg:px-24">
+            Desarrollamos el crecimiento de tu empresa Kodificando tus ideas.
           </h1>
-
-          <p className="mx-auto mt-6 max-w-3xl text-lg font-medium leading-relaxed text-gray-200 sm:text-xl lg:text-2xl">
-            Creamos sistemas web optimizados para Google y conectados a
-            WhatsApp para generar contactos reales, no solo visitas.
-          </p>
         </motion.div>
-
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <p className="mx-auto mt-8 max-w-2xl text-sm leading-7 text-gray-400 sm:text-base lg:text-lg">
-            Si tu negocio depende de clientes constantes y no estás captando
-            desde internet, estás perdiendo oportunidades todos los días.
-          </p>
+          <h2 className="text-white text-sm lg:text-base xl:text-lg sm:text-base mt-10 px-12 sm:px-48 ">
+            Unifica tus procesos y obtén la información que tu negocio necesita
+            para avanzar.
+          </h2>
         </motion.div>
-
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="mt-10 flex flex-col items-center gap-4"
         >
-          <button
-            className="rounded-2xl bg-white px-8 py-4 text-base font-bold text-gray-950 shadow-lg shadow-blue-900/20 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-100 hover:shadow-blue-500/20"
-            onClick={() => setIsModalOpen(true)}
-            aria-label="Solicitar diagnóstico gratuito"
+          <div
+            className="flex flex-col sm:flex-row mt-14  sm:mb-40 justify-center
+          transition-transform duration-300 hover:scale-110"
           >
-            Solicitar diagnóstico gratuito
-          </button>
-
-          <p className="text-sm font-medium text-gray-300">
-            Diagnóstico gratis en menos de 24 horas
-          </p>
+            <button
+              className="contained-button text-black rounded-xl font-bold cursor-pointer bg-gray-300 w-52 sm:w-52 h-12 
+              mr-0 sm:mr-4 lg:mr-6 mb-2 sm:mb-0"
+              onClick={() => setIsModalOpen(true)}
+              aria-label="ContactMe"
+            >
+              Contactanos
+            </button>
+          </div>
         </motion.div>
-
         {isModalOpen && (
           <ContactMeModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
         )}
