@@ -1,16 +1,12 @@
 import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
-import cloudflare from "@astrojs/cloudflare";
 import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  output: "server",
-  site: "https://webkode.co/",
-  adapter: cloudflare({}),
+  site: "https://webkode.co",
+  integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },
-
-  integrations: [react(), sitemap()],
 });
